@@ -11,7 +11,7 @@ interface RestaurantCardProps {
     restaurant: Restaurant;
 }
 
-// Server component that loads a single restaurant
+
 async function RestaurantCardContent({ restaurant }: RestaurantCardProps) {
     try {
         await restaurant.update();
@@ -19,7 +19,7 @@ async function RestaurantCardContent({ restaurant }: RestaurantCardProps) {
         const data: RestaurantData = {
             name: restaurant.name,
             url: restaurant.url,
-            imageUrl: restaurant.imageUrl,
+            imageUrl: restaurant.imageUrl ?? "",
             menu: restaurant.menu,
             menuToday: restaurant.menuToday
         };
@@ -50,6 +50,8 @@ async function RestaurantCardContent({ restaurant }: RestaurantCardProps) {
                             {data.url}
                         </a>
                     </CardDescription>
+                    
+                    
                 </CardHeader>
 
                 <CardContent className="space-y-4">

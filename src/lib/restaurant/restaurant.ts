@@ -9,7 +9,7 @@ export abstract class Restaurant {
     private _menuFrom: number = -Restaurant.MENU_TIME;
     private _name: string;
     protected _url: string;
-    private _imageUrl: string;
+    private _imageUrl: string | undefined;
     private _updating: boolean = false;
 
     constructor(name: string, url: string, imageUrl: string = "") {
@@ -54,7 +54,7 @@ export abstract class Restaurant {
         return this._url;
     }
 
-    get imageUrl(): string {
+    get imageUrl(): string | undefined {
         return this._imageUrl;
     }
     
@@ -70,7 +70,7 @@ export abstract class Restaurant {
         return Restaurant.WEEKDAYS_SE[weekday === 0 ? 6 : weekday - 1];
     }
     
-    static daySvToEn(day: string): string {
+    static daySvToEn (day: string): string {
         const idx = Restaurant.WEEKDAYS_SE.findIndex(x => x === day)
         return Restaurant.WEEKDAYS_EN[idx]
     }

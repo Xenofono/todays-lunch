@@ -2,13 +2,15 @@ import RestaurantGrid from "@/components/restaurant/RestaurantGrid";
 import { OliverTwist } from "@/lib/restaurant/oliver-twist";
 import { Kvarnen } from "@/lib/restaurant/kvarnen";
 import {BastardBurgers} from "@/lib/restaurant/bastard-burgers";
+import { BooBurgers } from "@/lib/restaurant/boo-burgers";
 
 export default async function Home() {
 
     const restaurants = [
         new OliverTwist(),
         new Kvarnen(),
-        new BastardBurgers()
+        new BastardBurgers(),
+        new BooBurgers()
     ];
     
   return (

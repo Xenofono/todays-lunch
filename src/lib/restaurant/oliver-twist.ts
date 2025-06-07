@@ -7,8 +7,7 @@ export class OliverTwist extends Restaurant {
     constructor() {
         super(
             "Oliver Twist",
-            "https://www.olivertwist.se/",
-            "https://static.wixstatic.com/media/2cc9bc_213f995f21474f0fb9c92da0bdfd2823~mv2.png"
+            "https://www.olivertwist.se/"
         );
     }
 

@@ -7,7 +7,7 @@ export class BastardBurgers extends Restaurant {
         super(
             "Bastard Burgers",
             "https://bastardburgers.com/se/meny/",
-            "https://bastardburgers.com/wp-content/themes/bastardburgers/dist/img/bastard_logo.svg"
+            "https://images.ohmyhosting.se/yvIjQmsekOzeWSFMjsC-mJmTNWs=/1440x710/smart/filters:quality(85)/https%3A%2F%2Fbastardburgers.com%2Fwp-content%2Fuploads%2Fsites%2F6%2F2021%2F03%2FBB_meny_header_v2.jpg"
         );
     }
 
