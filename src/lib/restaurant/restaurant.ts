@@ -74,4 +74,9 @@ export abstract class Restaurant {
         const idx = Restaurant.WEEKDAYS_SE.findIndex(x => x === day)
         return Restaurant.WEEKDAYS_EN[idx]
     }
+    
+    static isWeekend(): bool {
+        const today = Restaurant.todayEn()
+        return today == "saturday" || today == "sunday";
+    }
 }
