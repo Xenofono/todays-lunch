@@ -9,7 +9,7 @@ export abstract class Restaurant {
     private _menuFrom: number = -Restaurant.MENU_TIME;
     private _name: string;
     protected _url: string;
-    private _imageUrl: string | undefined;
+    private _imageUrl: string;
     private _updating: boolean = false;
 
     constructor(name: string, url: string, imageUrl: string = "") {
@@ -54,7 +54,7 @@ export abstract class Restaurant {
         return this._url;
     }
 
-    get imageUrl(): string | undefined {
+    get imageUrl(): string {
         return this._imageUrl;
     }
     
@@ -75,7 +75,7 @@ export abstract class Restaurant {
         return Restaurant.WEEKDAYS_EN[idx]
     }
     
-    static isWeekend(): bool {
+    static isWeekend(): boolean {
         const today = Restaurant.todayEn()
         return today == "saturday" || today == "sunday";
     }

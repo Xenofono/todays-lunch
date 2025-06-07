@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import RestaurantCard from './RestaurantCard';
 import { Restaurant } from '@/lib/restaurant/restaurant';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
