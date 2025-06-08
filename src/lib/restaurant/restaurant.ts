@@ -11,6 +11,7 @@ export abstract class Restaurant {
     protected _url: string;
     private _imageUrl: string;
     private _updating: boolean = false;
+    protected _additionalInformation: string | undefined = undefined;
 
     constructor(name: string, url: string, imageUrl: string = "") {
         this._name = name;
@@ -38,6 +39,10 @@ export abstract class Restaurant {
 
     get menu(): DailyMenu {
         return this._currentMenu;
+    }
+    
+    get additionalInformation(): string | undefined {
+        return this._additionalInformation;
     }
 
     get menuToday(): string[] {

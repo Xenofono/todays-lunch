@@ -3,6 +3,7 @@ import { OliverTwist } from "@/lib/restaurant/oliver-twist";
 import { Kvarnen } from "@/lib/restaurant/kvarnen";
 import {BastardBurgers} from "@/lib/restaurant/bastard-burgers";
 import { BooBurgers } from "@/lib/restaurant/boo-burgers";
+import { DeliDiLuca } from "@/lib/restaurant/deli-di-luca";
 
 export default async function Home() {
 
@@ -10,7 +11,8 @@ export default async function Home() {
         new OliverTwist(),
         new Kvarnen(),
         new BastardBurgers(),
-        new BooBurgers()
+        new BooBurgers(),
+        new DeliDiLuca()
     ];
     
   return (
