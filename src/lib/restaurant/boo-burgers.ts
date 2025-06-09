@@ -12,7 +12,11 @@ export class BooBurgers extends Restaurant {
     }
 
     protected async _getMenu(): Promise<DailyMenu> {
-        const html = await (await fetch(this._url)).text();
+        const html = await (await fetch(this._url, {
+            next: {
+                revalidate: 14400
+            }
+        })).text();
         return this._parseMenu(html);
     }
 

@@ -5,6 +5,8 @@ import {BastardBurgers} from "@/lib/restaurant/bastard-burgers";
 import { BooBurgers } from "@/lib/restaurant/boo-burgers";
 import { DeliDiLuca } from "@/lib/restaurant/deli-di-luca";
 
+export const revalidate = 14400;
+
 export default async function Home() {
 
     const restaurants = [

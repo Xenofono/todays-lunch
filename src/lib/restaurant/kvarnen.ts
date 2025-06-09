@@ -21,7 +21,11 @@ export class Kvarnen extends Restaurant {
     }
 
     private async _firstPdf(): Promise<string> {
-        const html = await (await fetch(this._url)).text();
+        const html = await (await fetch(this._url, {
+            next: {
+                revalidate: 14400
+            }
+        })).text();
         const $ = cheerio.load(html);
         const href = $('a[href*=".pdf"]').first().attr("href");
         if (!href) throw new Error("No PDF link found");

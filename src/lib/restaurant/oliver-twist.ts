@@ -15,7 +15,11 @@ export class OliverTwist extends Restaurant {
     protected async _getMenu(): Promise<DailyMenu> {
         try {
             // Fetch the webpage
-            const response = await fetch(this._url);
+            const response = await fetch(this._url, {
+                next: {
+                    revalidate: 14400
+                }
+            });
             if (!response.ok) {
                 throw new Error(`Failed to fetch website: ${response.status}`);
             }
