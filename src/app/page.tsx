@@ -5,7 +5,7 @@ import {BastardBurgers} from "@/lib/restaurant/bastard-burgers";
 import { BooBurgers } from "@/lib/restaurant/boo-burgers";
 import { DeliDiLuca } from "@/lib/restaurant/deli-di-luca";
 
-export const revalidate = 14400;
+export const dynamic = 'force-dynamic';
 
 export default async function Home() {
 
