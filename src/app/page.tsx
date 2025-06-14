@@ -4,6 +4,8 @@ import { Kvarnen } from "@/lib/restaurant/kvarnen";
 import {BastardBurgers} from "@/lib/restaurant/bastard-burgers";
 import { BooBurgers } from "@/lib/restaurant/boo-burgers";
 import { DeliDiLuca } from "@/lib/restaurant/deli-di-luca";
+import { BiblioteketLive } from "@/lib/restaurant/biblioteket-live";
+import { Bistroteket } from "@/lib/restaurant/bistroteket";
 
 export const revalidate = 14400;
 
@@ -14,7 +16,9 @@ export default async function Home() {
         new Kvarnen(),
         new BastardBurgers(),
         new BooBurgers(),
-        new DeliDiLuca()
+        new DeliDiLuca(),
+        new BiblioteketLive(),
+        new Bistroteket()
     ];
     
   return (

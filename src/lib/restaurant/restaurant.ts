@@ -1,5 +1,8 @@
 import {DailyMenu} from "@/lib/types";
 
+type VALID_SE_DAYS = typeof Restaurant.WEEKDAYS_SE[number]
+type VALID_EN_DAYS = typeof Restaurant.WEEKDAYS_EN[number]
+
 export abstract class Restaurant {
     static readonly WEEKDAYS_EN = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"] as const;
     static readonly WEEKDAYS_SE = ["måndag", "tisdag", "onsdag", "torsdag", "fredag", "lördag", "söndag"] as const;
@@ -36,6 +39,8 @@ export abstract class Restaurant {
             this._updating = false;
         }
     }
+    
+    
 
     get menu(): DailyMenu {
         return this._currentMenu;
@@ -83,5 +88,13 @@ export abstract class Restaurant {
     static isWeekend(): boolean {
         const today = Restaurant.todayEn()
         return today == "saturday" || today == "sunday";
+    }
+
+    static isValidSeDay(day: string): day is VALID_SE_DAYS {
+        return (Restaurant.WEEKDAYS_SE as readonly string[]).includes(day);
+    }
+
+    static isValidEnDay(day: string): day is VALID_EN_DAYS {
+        return (Restaurant.WEEKDAYS_EN as readonly string[]).includes(day);
     }
 }
