@@ -34,13 +34,12 @@ export class Bistroteket extends Restaurant {
 
     private _parseMenu(raw: string): DailyMenu {
         const menu: DailyMenu = {};
-
         // work on trimmed non-empty lines
         const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
         const firstLineIndex = lines.findIndex(x => x.trim() === "MÅNDAG")
         const lastLineIndex = lines.findIndex(x => x.trim().includes(" kr") && x.trim().length == 6)
         
-        this._additionalInformation = "THIS SITES PDF IS FUCKED UP, SORRY... " + lines.find(x => x.includes("VECKANS LUNCH"))?.split(" ")?.filter(x => x)?.join(" ");
+        this._additionalInformation = "THIS SITES PDF IS FUCKED UP, HOPE THEY COOK BETTER THAN THEY PDF..." + lines.find(x => x.includes("VECKANS LUNCH"))?.split(" ")?.filter(x => x)?.join(" ");
         const linesToWorkWith = lines.slice(firstLineIndex, lastLineIndex)
 
         let currentDay: string | null = null;
@@ -57,7 +56,9 @@ export class Bistroteket extends Restaurant {
                 if (currentDay && line[0] !== "(")
                 {
                     if (!menu?.[currentDay]) menu[currentDay] = [];
-                    menu[currentDay].push(line);
+                    if (!line.includes(":")) menu[currentDay][menu[currentDay].length-1] += ` ${line}`;
+                    else menu[currentDay].push(line);
+                    
                 }
 
             }
