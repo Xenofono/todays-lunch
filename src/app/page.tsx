@@ -7,7 +7,7 @@ import { DeliDiLuca } from "@/lib/restaurant/deli-di-luca";
 import { BiblioteketLive } from "@/lib/restaurant/biblioteket-live";
 import { Bistroteket } from "@/lib/restaurant/bistroteket";
 
-export const revalidate = 14400;
+export const dynamic = 'force-dynamic';
 
 export default async function Home() {
 
