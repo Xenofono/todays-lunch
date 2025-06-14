@@ -43,7 +43,6 @@ export class Bistroteket extends Restaurant {
         this._additionalInformation = "THIS SITES PDF IS FUCKED UP, SORRY... " + lines.find(x => x.includes("VECKANS LUNCH"))?.split(" ")?.filter(x => x)?.join(" ");
         const linesToWorkWith = lines.slice(firstLineIndex, lastLineIndex)
 
-
         let currentDay: string | null = null;
 
 
