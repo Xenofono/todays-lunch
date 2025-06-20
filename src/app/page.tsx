@@ -38,7 +38,7 @@ export default async function Home() {
             <RestaurantGrid restaurants={restaurants} />
 
         </main>
-        
+       
     </div>
   );
 }
