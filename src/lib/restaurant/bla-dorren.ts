@@ -9,6 +9,7 @@ export class BlaDorren extends Restaurant {
             "https://bla-dorren.se/lunch",
             "https://bla-dorren.se/lunch/placeholder"
         );
+        this._additionalInformation = "No HTML or PDF menu to parse here, so please click button to view menu."
     }
 
     protected async _getMenu(): Promise<DailyMenu> {

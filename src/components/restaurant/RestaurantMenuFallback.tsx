@@ -13,7 +13,7 @@ export function RestaurantMenuFallback(props: { totalDays: number, menus: string
         
         return <Dialog>
             <div className="w-full h-full flex justify-center mb-4">
-                <DialogTrigger>
+                <DialogTrigger asChild>
                     <Button className="cursor-pointer">View menu img</Button>
                 </DialogTrigger>
             </div>
