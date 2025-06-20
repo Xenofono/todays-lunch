@@ -37,7 +37,7 @@ async function RestaurantCardContent({restaurant}: RestaurantCardProps) {
                                 </Badge>
                             </CardTitle>
                         </div>
-                        <CardDescription className="space-y-2 overflow-hidden min-h-14">
+                        <CardDescription className="space-y-2 truncate break-all min-h-14">
                             <div className="flex gap-2">
                                 <ExternalLink className="max-h-4 max-w-4"/>
                                 <a

@@ -4,6 +4,10 @@
 /* shadcn/ui custom theme variables */
 @custom-variant dark (&:is(.dark *));
 
+* {
+  outline: 1px solid red !important;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
