@@ -7,6 +7,7 @@ import { DeliDiLuca } from "@/lib/restaurant/deli-di-luca";
 import { BiblioteketLive } from "@/lib/restaurant/biblioteket-live";
 import { Bistroteket } from "@/lib/restaurant/bistroteket";
 import { BlaDorren } from "@/lib/restaurant/bla-dorren";
+import { Usine } from "@/lib/restaurant/usine";
 
 export const dynamic = 'force-dynamic';
 
@@ -20,7 +21,8 @@ export default async function Home() {
         new DeliDiLuca(),
         new BiblioteketLive(),
         new Bistroteket(),
-        new BlaDorren()
+        new BlaDorren(),
+        new Usine()
     ];
     
   return (
