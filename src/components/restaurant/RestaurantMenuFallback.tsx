@@ -3,7 +3,7 @@
 import {Alert, AlertDescription} from "../ui/alert";
 import Image from 'next/image'
 import {AlertCircle} from 'lucide-react';
-import {Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger} from "../ui/dialog";
+import {Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger} from "../ui/dialog";
 import { Button } from "../ui/button";
 
 
