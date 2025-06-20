@@ -14,6 +14,7 @@ export abstract class Restaurant {
     protected _url: string;
     private _imageUrl: string;
     private _updating: boolean = false;
+    private _didError: string | undefined = undefined
     protected _additionalInformation: string | undefined = undefined;
     protected _menuImgUrl: string | undefined = undefined;
 
@@ -36,12 +37,15 @@ export abstract class Restaurant {
             }
         } catch (error) {
             console.error(`ERROR: Failed to update restaurant menu (${this._name}):`, error instanceof Error ? error.message : 'Unknown error');
+            this._didError = `ERROR: Failed to update restaurant menu (${this._name}): ${error instanceof Error ? error.message : 'Unknown error'}`
         } finally {
             this._updating = false;
         }
     }
     
-    
+    get didError(): string | undefined {
+        return this._didError
+    }
 
     get menu(): DailyMenu {
         return this._currentMenu;

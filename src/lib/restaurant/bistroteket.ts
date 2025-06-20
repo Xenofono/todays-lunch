@@ -29,6 +29,7 @@ export class Bistroteket extends Restaurant {
         const $ = cheerio.load(html);
         const href = $('a:contains("Lunch")').first().attr("href");
         if (!href) throw new Error("No PDF link found");
+        this._url = this._url+href
         return href.startsWith("http") ? href : new URL(href, this._url).href;
     }
 

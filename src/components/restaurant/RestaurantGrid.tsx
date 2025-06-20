@@ -3,6 +3,7 @@ import { Restaurant } from '@/lib/restaurant/restaurant';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Info } from 'lucide-react';
+import {TypographyLarge, TypographyP } from '@/lib/typography/Typography';
 
 interface RestaurantGridProps {
     restaurants: Restaurant[];
@@ -15,18 +16,18 @@ export default function RestaurantGrid({ restaurants }: RestaurantGridProps) {
     return (
         <div className="w-full max-w-7xl space-y-6">
             <Alert>
-                <Info className="h-4 w-4" />
-                <AlertTitle>Loading <Badge variant="secondary">{restaurants.length}</Badge> restaurants.</AlertTitle>
+                <Info className="h-6 w-6" />
+                <AlertTitle>
+                    <TypographyLarge>Loading <Badge variant="secondary">{restaurants.length}</Badge> restaurants</TypographyLarge></AlertTitle>
                 <AlertDescription className="flex items-center gap-2">
-                    Loading restaurants {restaurants.map(x => x.name).join(", ")}.
-                    Each will appear when ready.
+                    <TypographyP>Loading restaurants {restaurants.map(x => (<Badge key={x.name} className="m-1">{x.name}</Badge>))}</TypographyP>
                 </AlertDescription>
             </Alert>
 
             {isWeekend && <Alert className="bg-amber-200">
                 <Info className="h-4 w-4" />
                 <AlertDescription className="flex items-center gap-2">
-                    Menus on holidays and weekends may not appear properly
+                    <TypographyP>Menus on holidays and weekends may not appear properly</TypographyP>
                 </AlertDescription>
             </Alert>}
 

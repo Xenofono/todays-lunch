@@ -8,6 +8,7 @@ import { BiblioteketLive } from "@/lib/restaurant/biblioteket-live";
 import { Bistroteket } from "@/lib/restaurant/bistroteket";
 import { BlaDorren } from "@/lib/restaurant/bla-dorren";
 import { Usine } from "@/lib/restaurant/usine";
+import { TypographyH1, TypographyP } from "@/lib/typography/Typography";
 
 export const dynamic = 'force-dynamic';
 
@@ -30,8 +31,8 @@ export default async function Home() {
         <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
 
             <div>
-                <h1 className="text-3xl font-bold">Restaurant Menus</h1>
-                <p className="text-lg">Calculated at {new Date().toLocaleString('sv-SE', {timeZone: 'Europe/Stockholm'})} Swedish time</p>
+                <TypographyH1>Restaurant Menus</TypographyH1>
+                <TypographyP>Calculated at {new Date().toLocaleString('sv-SE', {timeZone: 'Europe/Stockholm'})} Swedish time</TypographyP>
             </div>
 
             <RestaurantGrid restaurants={restaurants} />

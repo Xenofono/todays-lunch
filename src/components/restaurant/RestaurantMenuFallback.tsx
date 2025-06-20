@@ -12,14 +12,14 @@ export function RestaurantMenuFallback(props: { totalDays: number, menus: string
     if (props.imgUrl) {
         
         return <Dialog>
-            <div className="w-full h-full flex justify-center mb-4">
+            <div className="flex justify-center">
                 <DialogTrigger asChild>
-                    <Button className="cursor-pointer">View menu img</Button>
+                    <Button className="cursor-pointer shadow-2xl">View menu img</Button>
                 </DialogTrigger>
             </div>
 
             <DialogContent
-                className="p-0 flex flex-col items-center justify-center"
+                className="p-0 flex flex-col items-center justify-center min-w-[46vw] max-h-[98vh]"
             >
                 <DialogHeader className="w-full px-8 pt-8">
                     <DialogTitle>Menu</DialogTitle>
@@ -49,7 +49,7 @@ export function RestaurantMenuFallback(props: { totalDays: number, menus: string
                 <Alert>
                     <AlertCircle className="h-4 w-4"/>
                     <AlertDescription>
-                        No menu data found for this restaurant.
+                        No menu data found for this restaurant, moved their menu around on page or lazy this week?
                     </AlertDescription>
                 </Alert>
             )}

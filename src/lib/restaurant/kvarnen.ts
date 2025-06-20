@@ -23,12 +23,13 @@ export class Kvarnen extends Restaurant {
     private async _firstPdf(): Promise<string> {
         const html = await (await fetch(this._url, {
             next: {
-                revalidate: 14400
+                revalidate: 3600
             }
         })).text();
         const $ = cheerio.load(html);
         const href = $('a[href*=".pdf"]').first().attr("href");
         if (!href) throw new Error("No PDF link found");
+        this._url = href;
         return href.startsWith("http") ? href : new URL(href, this._url).href;
     }
 
@@ -37,20 +38,30 @@ export class Kvarnen extends Restaurant {
 
         // work on trimmed non-empty lines
         const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-        const linesToWorkWith = lines.slice(1, 11)
+        const startIndex = lines.findIndex(x => x.toLowerCase() == "måndag")
+        const endIndex = lines.findIndex(x => x.toLowerCase() == "fredag")
+        const linesToWorkWith = lines.slice(startIndex, endIndex+2)
         
+        const priceLine = lines.find(x => x.toLowerCase().includes(":-"))
+        
+        if (priceLine) this._additionalInformation = priceLine;
 
         let currentDay: string | null = null;
         for (let i = 0; i < linesToWorkWith.length; i++) {
+            
             const line = linesToWorkWith[i];
-            if (i % 2 == 0)
+            
+            if(Restaurant.isValidSeDay(line.toLowerCase()))
             {
                 currentDay = line;
             }
             else
             {
                 const dayEn = Restaurant.daySvToEn(currentDay!);
-                menu[dayEn] = [line];
+                
+                if (menu?.[dayEn]) menu[dayEn].push(line)
+                else menu[dayEn] = [line];
+                
                 
             }
             //console.log(i, line)
