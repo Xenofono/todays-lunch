@@ -6,6 +6,7 @@ import { BooBurgers } from "@/lib/restaurant/boo-burgers";
 import { DeliDiLuca } from "@/lib/restaurant/deli-di-luca";
 import { BiblioteketLive } from "@/lib/restaurant/biblioteket-live";
 import { Bistroteket } from "@/lib/restaurant/bistroteket";
+import { BlaDorren } from "@/lib/restaurant/bla-dorren";
 
 export const dynamic = 'force-dynamic';
 
@@ -18,7 +19,8 @@ export default async function Home() {
         new BooBurgers(),
         new DeliDiLuca(),
         new BiblioteketLive(),
-        new Bistroteket()
+        new Bistroteket(),
+        new BlaDorren()
     ];
     
   return (

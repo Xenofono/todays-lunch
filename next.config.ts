@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
         remotePatterns: [
             new URL("https://gastrogate.com/files/**"),
             new URL("https://www.kvarnen.com/**"),
+            new URL("https://bla-dorren.se/**"),
         ]
     }
 };

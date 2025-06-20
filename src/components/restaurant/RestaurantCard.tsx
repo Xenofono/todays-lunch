@@ -5,10 +5,13 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { CheckCircle, AlertCircle, Clock, ExternalLink, DollarSign } from 'lucide-react';
+import {RestaurantMenuFallback} from "@/components/restaurant/RestaurantMenuFallback";
+
 
 interface RestaurantCardProps {
     restaurant: Restaurant;
 }
+
 
 
 async function RestaurantCardContent({ restaurant }: RestaurantCardProps) {
@@ -19,20 +22,20 @@ async function RestaurantCardContent({ restaurant }: RestaurantCardProps) {
         const totalItems = Object.values(restaurant.menu).flat().length;
 
         return (
-            <Card className="h-full shadow-lg hover:shadow-xl transition-shadow">
+            <Card className="h-full shadow-lg hover:shadow-xl transition-shadow rounded-2xl text-foreground">
                 <CardHeader>
                     <div className="flex items-center justify-between">
                         <CardTitle className="flex items-center gap-2">
                             {restaurant.name}
-                            <Badge variant="default" className="bg-green-500">
-                                <CheckCircle className="w-3 h-3 mr-1" />
+                            <Badge variant="success">
+                                <CheckCircle className="w-3 h-3 mr-1"/>
                                 Loaded
                             </Badge>
                         </CardTitle>
                     </div>
                     <CardDescription className="space-y-2 overflow-hidden">
                         <div className="flex gap-2">
-                            <ExternalLink className="w-4 h-4" />
+                            <ExternalLink className="w-4 h-4"/>
                             <a
                                 href={restaurant.url}
                                 className="hover:underline truncate transition-colors duration-200 hover:text-primary"
@@ -42,14 +45,14 @@ async function RestaurantCardContent({ restaurant }: RestaurantCardProps) {
                                 {restaurant.url}
                             </a>
                         </div>
-                       
+
                         {restaurant.additionalInformation && <div className="flex gap-2">
-                        <DollarSign className="w-4 h-4" />
-                            <span>{restaurant.additionalInformation}</span>
+                            <DollarSign className="w-4 h-4"/>
+                            <span className="flex-1">{restaurant.additionalInformation}</span>
                         </div>}
                     </CardDescription>
-                    
-                    
+
+
                 </CardHeader>
 
                 <CardContent className="space-y-4">
@@ -64,7 +67,7 @@ async function RestaurantCardContent({ restaurant }: RestaurantCardProps) {
                                 {restaurant.menuToday.map((item: string, index: number) => (
                                     <div
                                         key={index}
-                                        className="text-foreground border-l-2 border-primary pl-3 py-1 bg-accent/30 rounded-r hover:bg-accent/50 transition-colors duration-200"
+                                        className="text-accent-foreground/80 border-l-2 border-primary pl-3 py-1 bg-accent/30 rounded-r hover:bg-accent/50 transition-colors duration-200"
                                     >
                                         {item}
                                     </div>
@@ -83,16 +86,19 @@ async function RestaurantCardContent({ restaurant }: RestaurantCardProps) {
                             </h3>
 
                             <details className="group">
-                                <summary className="cursor-pointer text-sm text-muted-foreground hover:text-foreground transition-colors duration-200">
+                                <summary
+                                    className="cursor-pointer text-sm text-muted-foreground hover:text-foreground transition-colors duration-200">
                                     View all days →
                                 </summary>
                                 <div className="mt-3 space-y-3 pl-4 border-l-2 border-muted">
                                     {Object.entries(restaurant.menu).map(([day, items]: [string, any]) => (
-                                        <div key={day} className="bg-accent/20 p-3 rounded hover:bg-accent/40 transition-colors duration-200">
+                                        <div key={day}
+                                             className="bg-accent/20 p-3 rounded hover:bg-accent/40 transition-colors duration-200">
                                             <h4 className="font-medium capitalize text-primary">{day}</h4>
                                             <div className="space-y-1 mt-1">
                                                 {items.map((item: string, index: number) => (
-                                                    <div key={index} className="text-sm text-foreground/80 hover:scale-105">
+                                                    <div key={index}
+                                                         className="text-sm text-accent-foreground/80 hover:scale-105">
                                                         • {item}
                                                     </div>
                                                 ))}
@@ -103,15 +109,8 @@ async function RestaurantCardContent({ restaurant }: RestaurantCardProps) {
                             </details>
                         </div>
                     )}
-                    
-                    {totalDays === 0 && restaurant.menuToday.length === 0 && (
-                        <Alert>
-                            <AlertCircle className="h-4 w-4" />
-                            <AlertDescription>
-                                No menu data found for this restaurant.
-                            </AlertDescription>
-                        </Alert>
-                    )}
+
+                    <RestaurantMenuFallback totalDays={totalDays} menus={restaurant.menuToday} imgUrl={restaurant.menuImgUrl}/>
                 </CardContent>
             </Card>
         );
