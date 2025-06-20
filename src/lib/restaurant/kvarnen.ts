@@ -27,7 +27,8 @@ export class Kvarnen extends Restaurant {
             }
         })).text();
         const $ = cheerio.load(html);
-        const href = $('a[href*=".pdf"]').first().attr("href");
+        const lunchContainer = $('.todays-lunch').parent()
+        const href = $(lunchContainer).find("a[href*=\".pdf\"]").first().attr("href");
         if (!href) throw new Error("No PDF link found");
         this._url = href;
         return href.startsWith("http") ? href : new URL(href, this._url).href;
