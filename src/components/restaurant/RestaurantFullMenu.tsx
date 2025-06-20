@@ -15,7 +15,7 @@ const RestaurantFullMenu = ({menu, totalDays, totalItems}: props) => {
     
     
     return  <div>
-        <h3 className="font-semibold flex items-center">
+        <h3 className="font-semibold flex items-center gap-2">
             📅 Full Week
             <Badge variant="outline">{totalDays} days</Badge>
             <Badge variant="outline">{totalItems} items</Badge>
