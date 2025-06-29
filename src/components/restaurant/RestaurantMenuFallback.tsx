@@ -30,7 +30,7 @@ export function RestaurantMenuFallback(props: { totalDays: number, menus: string
                         alt="restaurant menu image"
                         width={1240}
                         height={1754}
-                        className="max-h-[88vh] max-w-[1000px]"
+                        className="max-h-[88vh] max-w-[90vw] lg:max-w-[1024px]"
                         priority
                     />
                 </div>
