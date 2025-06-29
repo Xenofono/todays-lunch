@@ -28,6 +28,7 @@
   --color-border: var(--border);
   --color-destructive: var(--destructive);
   --color-success: var(--success);
+  --color-warning: var(--warning);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -46,7 +47,7 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* === YOUR CUSTOM THEME COLORS + ALL EXTRA VARIABLES === */
+
 :root {
   --background: #20161F;
   --foreground: #c59f60;

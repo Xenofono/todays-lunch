@@ -24,12 +24,15 @@ export default function RestaurantGrid({ restaurants }: RestaurantGridProps) {
                 </AlertDescription>
             </Alert>
 
-            {isWeekend && <Alert className="bg-amber-200">
-                <Info className="h-4 w-4" />
-                <AlertDescription className="flex items-center gap-2">
-                    <TypographyP>Menus on holidays and weekends may not appear properly</TypographyP>
+            <Alert className="bg-warning">
+                <Info className="h-4 w-4 " color="black" />
+                <AlertDescription className=" flex flex-col text-black">
+                    <TypographyP>
+                        {isWeekend && "Menus on holidays and weekends may be wonky. "}
+                        Menus depend on the restaurant keeping their menu up to date and on the same place.
+                    </TypographyP>
                 </AlertDescription>
-            </Alert>}
+            </Alert>
 
             
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

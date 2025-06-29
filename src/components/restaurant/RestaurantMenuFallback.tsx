@@ -19,7 +19,7 @@ export function RestaurantMenuFallback(props: { totalDays: number, menus: string
             </div>
 
             <DialogContent
-                className="p-0 flex flex-col items-center justify-center min-w-[46vw] max-h-[98vh]"
+                className="p-0 flex flex-col items-center justify-center min-w-[46vw] m max-h-[98vh]"
             >
                 <DialogHeader className="w-full px-8 pt-8">
                     <DialogTitle>Menu</DialogTitle>
@@ -30,7 +30,7 @@ export function RestaurantMenuFallback(props: { totalDays: number, menus: string
                         alt="restaurant menu image"
                         width={1240}
                         height={1754}
-                        className="max-h-[88vh] max-w-[90vw]"
+                        className="max-h-[88vh] max-w-[1000px]"
                         priority
                     />
                 </div>
