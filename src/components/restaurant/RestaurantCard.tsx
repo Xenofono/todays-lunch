@@ -22,6 +22,7 @@ async function RestaurantCardContent({restaurant}: RestaurantCardProps) {
         const totalDays = Object.keys(restaurant.menu).length;
         const totalItems = Object.values(restaurant.menu).flat().length;
         const didError = restaurant.didError
+    
 
         return !didError
             ? (
