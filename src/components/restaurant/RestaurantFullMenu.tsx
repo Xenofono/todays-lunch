@@ -14,7 +14,6 @@ type props = {
 const RestaurantFullMenu = ({menu, totalDays, totalItems}: props) => {
     
     
-    
     return  <div>
         <TypographyH4 className="font-semibold flex items-center gap-2">
                 📅 Full Week
