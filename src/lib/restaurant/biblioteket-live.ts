@@ -7,7 +7,7 @@ export class BiblioteketLive extends Restaurant {
     constructor() {
         super(
             "Biblioteket Live",
-            "https://biblioteketlive.se",
+            "https://www.biblioteketlive.se/lunch",
             "https://biblioteketlive.se/placeholder"
         );
     }
@@ -29,8 +29,7 @@ export class BiblioteketLive extends Restaurant {
         const $ = cheerio.load(html);
         const href = $('a[href*=".pdf"]').first().attr("href");
         if (!href) throw new Error("No PDF link found");
-        this._url = href;
-        return href.startsWith("http") ? href : new URL(href, this._url).href;
+        return this._url.replace("/lunch", href);
     }
 
     private _parseMenu(raw: string): DailyMenu {
