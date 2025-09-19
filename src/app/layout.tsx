@@ -20,7 +20,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Today's lunch",
+  title: "Todays lunch",
   description: "Kristoffers lunchapp",
 };
 
