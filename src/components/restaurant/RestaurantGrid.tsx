@@ -4,6 +4,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Info } from 'lucide-react';
 import {TypographyLarge, TypographyP } from '@/lib/typography/Typography';
+import RestaurantSearchBar from "./RestaurantSearchBar";
 
 interface RestaurantGridProps {
     restaurants: Restaurant[];
@@ -33,7 +34,7 @@ export default function RestaurantGrid({ restaurants }: RestaurantGridProps) {
                     </TypographyP>
                 </AlertDescription>
             </Alert>
-
+            <RestaurantSearchBar/>
             
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {restaurants.map((restaurant) => (

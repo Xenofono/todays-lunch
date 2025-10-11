@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import { TypographySmall } from "@/lib/typography/Typography";
+import { Provider } from "jotai";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,7 +35,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
       >
-        {children}
+      <Provider>
+          {children}
+      </Provider>
         <footer className="w-full border-t border-gray-200 py-6 mt-12">
             <div className="max-w-7xl mx-auto px-8 flex flex-col sm:flex-row items-center justify-between text-sm text-gray-100 gap-2">
                 <TypographySmall>© {new Date().getFullYear()} Kristoffer Näsström</TypographySmall>
