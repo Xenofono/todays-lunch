@@ -6,8 +6,9 @@ import {Badge} from "@/components/ui/badge";
 import {CheckCircle, ExternalLink, MessageCircleQuestion} from "lucide-react";
 import RestaurantFullMenu from "@/components/restaurant/RestaurantFullMenu";
 import {RestaurantMenuFallback} from "@/components/restaurant/RestaurantMenuFallback";
-import { useAtomValue } from "jotai";
-import { searchAtom } from "@/store/search";
+import {useAtomValue} from "jotai";
+import {searchAtom} from "@/store/search";
+import {randomizedRestaurantAtom} from "@/store/randomizer";
 
 type RestaurantCardSuccessProps = {
     name: string
@@ -22,8 +23,20 @@ type RestaurantCardSuccessProps = {
     }
 }
 
-const RestaurantCardSuccess = ({name, url, additionalInformation, menuToday, totalDays, totalItems, menuImgUrl, dailyMenu}: RestaurantCardSuccessProps) => {
+const RestaurantCardSuccess = ({
+                                   name,
+                                   url,
+                                   additionalInformation,
+                                   menuToday,
+                                   totalDays,
+                                   totalItems,
+                                   menuImgUrl,
+                                   dailyMenu
+                               }: RestaurantCardSuccessProps) => {
     const q = useAtomValue(searchAtom);
+    const randomizedRestaurant = useAtomValue(randomizedRestaurantAtom);
+
+    if(randomizedRestaurant && randomizedRestaurant !== name) return null;
 
     if (q) {
         const queryLower = q.toLowerCase()
@@ -41,8 +54,8 @@ const RestaurantCardSuccess = ({name, url, additionalInformation, menuToday, tot
         }
     }
 
-    return (               <Card
-        className="h-full shadow-lg hover:shadow-xl transition-shadow rounded-2xl text-foreground hover:bg-card/70">
+    return (<Card
+        className="shadow-lg hover:shadow-xl transition-shadow rounded-2xl text-foreground hover:bg-card/70 xs:w-[26rem] min-h-[32rem]">
         <CardHeader>
             <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2">
@@ -76,7 +89,6 @@ const RestaurantCardSuccess = ({name, url, additionalInformation, menuToday, tot
         </CardHeader>
 
         <CardContent className="space-y-8">
-            {/* Today's Menu */}
             {menuToday.length > 0 && (
                 <div>
                     <TypographyH4 className="flex items-center gap-2 mb-1">

@@ -4,6 +4,7 @@ import "./globals.css";
 import Link from "next/link";
 import { TypographySmall } from "@/lib/typography/Typography";
 import { Provider } from "jotai";
+import {Toaster} from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +38,14 @@ export default function RootLayout({
       >
       <Provider>
           {children}
+          <Toaster  toastOptions={{
+              style: {
+                  background: "var(--popover)",
+                  color: "var(--popover-foreground)",
+                  border: "1px solid var(--border)",
+                  borderRadius: "var(--radius)",
+              },
+          }}/>
       </Provider>
         <footer className="w-full border-t border-gray-200 py-6 mt-12">
             <div className="max-w-7xl mx-auto px-8 flex flex-col sm:flex-row items-center justify-between text-sm text-gray-100 gap-2">

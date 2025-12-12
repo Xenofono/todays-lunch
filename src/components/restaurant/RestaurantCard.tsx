@@ -3,10 +3,8 @@ import {Restaurant} from '@/lib/restaurant/restaurant';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Badge} from '@/components/ui/badge';
 import {Skeleton} from '@/components/ui/skeleton';
-import {CheckCircle, Clock, ExternalLink, MessageCircleQuestion} from 'lucide-react';
-import {RestaurantMenuFallback} from "@/components/restaurant/RestaurantMenuFallback";
-import RestaurantFullMenu from './RestaurantFullMenu';
-import {TypographyH3, TypographyH4, TypographyMuted, TypographyP, TypographySmall} from '@/lib/typography/Typography';
+import {Clock} from 'lucide-react';
+import {TypographyH3} from '@/lib/typography/Typography';
 import RestaurantCardError from "@/components/restaurant/RestaurantCardError";
 import RestaurantCardSuccess from "./RestaurantCardSuccess";
 

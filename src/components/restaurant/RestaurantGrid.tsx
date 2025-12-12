@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Info } from 'lucide-react';
 import {TypographyLarge, TypographyP } from '@/lib/typography/Typography';
 import RestaurantSearchBar from "./RestaurantSearchBar";
+import SelectRandom from "@/components/restaurant/SelectRandom";
 
 interface RestaurantGridProps {
     restaurants: Restaurant[];
@@ -35,6 +36,7 @@ export default function RestaurantGrid({ restaurants }: RestaurantGridProps) {
                 </AlertDescription>
             </Alert>
             <RestaurantSearchBar/>
+            <SelectRandom restaurantNames={restaurants.map(x => x.name)} />
             
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {restaurants.map((restaurant) => (
