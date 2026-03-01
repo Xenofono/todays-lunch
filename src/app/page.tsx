@@ -2,14 +2,18 @@ import RestaurantGrid from "@/components/restaurant/RestaurantGrid";
 import { OliverTwist } from "@/lib/restaurant/oliver-twist";
 import { Kvarnen } from "@/lib/restaurant/kvarnen";
 import {BastardBurgers} from "@/lib/restaurant/bastard-burgers";
-import { BooBurgers } from "@/lib/restaurant/boo-burgers";
 import { DeliDiLuca } from "@/lib/restaurant/deli-di-luca";
 import { BiblioteketLive } from "@/lib/restaurant/biblioteket-live";
 import { Bistroteket } from "@/lib/restaurant/bistroteket";
 import { BlaDorren } from "@/lib/restaurant/bla-dorren";
 import { Usine } from "@/lib/restaurant/usine";
-import { TypographyH1, TypographyP } from "@/lib/typography/Typography";
+import { Florentine } from "@/lib/restaurant/florentine";
+import { Invece } from "@/lib/restaurant/invece";
+import {TypographyH1, TypographyLarge, TypographyP} from "@/lib/typography/Typography";
 import { shuffle } from "@/lib/utils";
+import {Info} from "lucide-react";
+import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
+import {Badge} from "@/components/ui/badge";
 
 export const dynamic = 'force-dynamic';
 
@@ -19,12 +23,13 @@ export default async function Home() {
         new OliverTwist(),
         new Kvarnen(),
         new BastardBurgers(),
-        new BooBurgers(),
         new DeliDiLuca(),
         new BiblioteketLive(),
         new Bistroteket(),
         new BlaDorren(),
-        new Usine()
+        new Usine(),
+        new Florentine(),
+        new Invece()
     ]);
     
   return (
@@ -33,8 +38,16 @@ export default async function Home() {
 
             <div>
                 <TypographyH1>Restaurant Menus</TypographyH1>
-                <TypographyP>Calculated at {new Date().toLocaleString('sv-SE', {timeZone: 'Europe/Stockholm'})} Swedish time</TypographyP>
             </div>
+
+            <Alert>
+                <Info className="h-6 w-6" />
+                <AlertTitle>
+                    <TypographyLarge>News 2026-03-01</TypographyLarge></AlertTitle>
+                <AlertDescription>
+                    <TypographyP>Removed Boo (RIP) and added Florentine and Invece</TypographyP>
+                </AlertDescription>
+            </Alert>
 
             <RestaurantGrid restaurants={restaurants} />
 
