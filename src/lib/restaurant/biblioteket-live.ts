@@ -8,7 +8,9 @@ export class BiblioteketLive extends Restaurant {
         super(
             "Biblioteket Live",
             "https://www.biblioteketlive.se/lunch",
-            "https://biblioteketlive.se/placeholder"
+            "https://biblioteketlive.se/placeholder",
+            "Medborgarplatsen 2, 118 26 Stockholm",
+            { lat: 59.31470, lng: 18.071793 }
         );
     }
 

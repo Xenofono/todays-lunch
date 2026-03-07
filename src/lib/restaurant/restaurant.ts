@@ -17,11 +17,15 @@ export abstract class Restaurant {
     private _didError: string | undefined = undefined
     protected _additionalInformation: string | undefined = undefined;
     protected _menuImgUrl: string | undefined = undefined;
+    private _address: string | undefined = undefined;
+    private _coordinates: { lat: number; lng: number } | undefined = undefined;
 
-    constructor(name: string, url: string, imageUrl: string = "") {
+    constructor(name: string, url: string, imageUrl: string = "", address?: string, coordinates?: { lat: number; lng: number }) {
         this._name = name;
         this._url = url;
         this._imageUrl = imageUrl;
+        this._address = address;
+        this._coordinates = coordinates;
     }
 
     async update(): Promise<void> {
@@ -75,6 +79,14 @@ export abstract class Restaurant {
 
     get imageUrl(): string {
         return this._imageUrl;
+    }
+
+    get address(): string | undefined {
+        return this._address;
+    }
+
+    get coordinates(): { lat: number; lng: number } | undefined {
+        return this._coordinates;
     }
     
     protected abstract _getMenu(): Promise<DailyMenu>;

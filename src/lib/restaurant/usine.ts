@@ -7,7 +7,9 @@ export class Usine extends Restaurant {
         super(
             "Usine",
             "https://www.usine.se/bistro38",
-            "https://www.usine.se/bistro38/placeholder"
+            "https://www.usine.se/bistro38/placeholder",
+            "Södermalmsallén 38, 118 28 Stockholm",
+            { lat: 59.313747, lng: 18.070368 }
         );
     }
 

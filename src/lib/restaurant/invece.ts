@@ -8,7 +8,9 @@ export class Invece extends Restaurant {
         super(
             "Invece",
             "https://invece.se/lunch/",
-            "https://invece.se/wp-content/uploads/2023/01/invece-white.png"
+            "https://invece.se/wp-content/uploads/2023/01/invece-white.png",
+            "Götgatan 73, 116 62 Stockholm",
+            { lat: 59.311375, lng: 18.075058 }
         );
     }
 

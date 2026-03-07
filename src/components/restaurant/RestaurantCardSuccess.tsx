@@ -9,6 +9,7 @@ import {RestaurantMenuFallback} from "@/components/restaurant/RestaurantMenuFall
 import {useAtomValue} from "jotai";
 import {searchAtom} from "@/store/search";
 import {randomizedRestaurantAtom} from "@/store/randomizer";
+import MapButton from "@/components/restaurant/MapButton";
 
 type RestaurantCardSuccessProps = {
     name: string
@@ -21,6 +22,11 @@ type RestaurantCardSuccessProps = {
     dailyMenu: {
         [day: string]: string[]
     }
+    address?: string
+    coordinates?: {
+        lat: number
+        lng: number
+    }
 }
 
 const RestaurantCardSuccess = ({
@@ -31,7 +37,9 @@ const RestaurantCardSuccess = ({
                                    totalDays,
                                    totalItems,
                                    menuImgUrl,
-                                   dailyMenu
+                                   dailyMenu,
+                                   address,
+                                   coordinates
                                }: RestaurantCardSuccessProps) => {
     const q = useAtomValue(searchAtom);
     const randomizedRestaurant = useAtomValue(randomizedRestaurantAtom);
@@ -65,6 +73,7 @@ const RestaurantCardSuccess = ({
                         <TypographySmall>Loaded</TypographySmall>
                     </Badge>
                 </CardTitle>
+                <MapButton name={name} address={address} coordinates={coordinates} />
             </div>
             <CardDescription className="space-y-2 min-h-14 overflow-hidden">
                 <div className="flex gap-2">

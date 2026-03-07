@@ -8,7 +8,9 @@ export class Kvarnen extends Restaurant {
         super(
             "Kvarnen",
             "https://www.kvarnen.com/mat-dryck/",
-            "https://www.kvarnen.com/wp-content/uploads/2017/01/kvarnen_3.jpg"
+            "https://www.kvarnen.com/wp-content/uploads/2017/01/kvarnen_3.jpg",
+            "Tjärhovsgatan 4, 116 21 Stockholm",
+            { lat: 59.314846, lng: 18.0742 }
         );
     }
 

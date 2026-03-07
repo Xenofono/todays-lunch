@@ -9,6 +9,8 @@ export class OliverTwist extends Restaurant {
             "Oliver Twist",
             "https://www.olivertwist.se/",
             "https://www.olivertwist.se/placeholder",
+            "Repslagargatan 6, 118 46 Stockholm",
+            { lat: 59.3183, lng: 18.07000 }
         );
     }
 

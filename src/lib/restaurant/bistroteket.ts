@@ -8,7 +8,9 @@ export class Bistroteket extends Restaurant {
         super(
             "Bistroteket",
             "https://www.bistroteket.se",
-            "https://www.bistroteket.se/placeholder"
+            "https://www.bistroteket.se/placeholder",
+            "Bondegatan 54, 116 33 Stockholm",
+            { lat: 59.313533803531136, lng: 18.084612856319417}
         );
     }
 

@@ -7,7 +7,9 @@ export class BlaDorren extends Restaurant {
         super(
             "Blå dörren",
             "https://bla-dorren.se/lunch",
-            "https://bla-dorren.se/lunch/placeholder"
+            "https://bla-dorren.se/lunch/placeholder",
+            "Södermalmstorg 6, 116 45 Stockholm",
+            { lat: 59.320152, lng: 18.070196 }
         );
         this._additionalInformation = "No HTML or PDF menu to parse here, so please click button to view menu."
     }

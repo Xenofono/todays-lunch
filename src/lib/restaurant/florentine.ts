@@ -7,7 +7,9 @@ export class Florentine extends Restaurant {
         super(
             "Florentine",
             "https://www.florentinerestaurants.com/stockholm/veckans-lunch",
-            "https://cdn.prod.website-files.com/63728bf3f3f63c22f5b62cb0/63d3f1e9697c54721bda4755_Basd.svg"
+            "https://cdn.prod.website-files.com/63728bf3f3f63c22f5b62cb0/63d3f1e9697c54721bda4755_Basd.svg",
+            "Folkungagatan 44, 118 26 Stockholm",
+            { lat: 59.313866, lng: 18.07171 }
         );
     }
 

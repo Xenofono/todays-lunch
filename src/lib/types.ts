@@ -8,4 +8,9 @@ export interface RestaurantData {
     imageUrl: string;
     menu: DailyMenu;
     menuToday: string[];
+    address?: string;
+    coordinates?: {
+        lat: number;
+        lng: number;
+    };
 }

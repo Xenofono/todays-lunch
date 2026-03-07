@@ -33,6 +33,8 @@ async function RestaurantCardLoader({restaurant}: RestaurantCardLoaderProps) {
         totalItems,
         menuImgUrl: restaurant.menuImgUrl,
         dailyMenu,
+        address: restaurant.address,
+        coordinates: restaurant.coordinates,
     } satisfies React.ComponentProps<typeof RestaurantCardSuccess>;
 
 

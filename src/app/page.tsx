@@ -43,9 +43,9 @@ export default async function Home() {
             <Alert>
                 <Info className="h-6 w-6" />
                 <AlertTitle>
-                    <TypographyLarge>News 2026-03-01</TypographyLarge></AlertTitle>
+                    <TypographyLarge>News 2026-03-07</TypographyLarge></AlertTitle>
                 <AlertDescription>
-                    <TypographyP>Removed Boo (RIP) and added Florentine and Invece</TypographyP>
+                    <TypographyP>Added map feature</TypographyP>
                 </AlertDescription>
             </Alert>
 

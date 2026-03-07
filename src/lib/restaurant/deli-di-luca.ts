@@ -7,7 +7,9 @@ export class DeliDiLuca extends Restaurant {
         super(
             "Deli Di Luca",
             "https://www.delidiluca.se/lunchmeny/",
-            "https://www.delidiluca.se/placeholder"
+            "https://www.delidiluca.se/placeholder",
+            "Folkungagatan 110, 116 30 Stockholm",
+            { lat: 59.315414, lng: 18.084303 }
         );
     }
 
