@@ -9,11 +9,8 @@ import { BlaDorren } from "@/lib/restaurant/bla-dorren";
 import { Usine } from "@/lib/restaurant/usine";
 import { Florentine } from "@/lib/restaurant/florentine";
 import { Invece } from "@/lib/restaurant/invece";
-import {TypographyH1, TypographyLarge, TypographyP} from "@/lib/typography/Typography";
+import {TypographyH1} from "@/lib/typography/Typography";
 import { shuffle } from "@/lib/utils";
-import {Info} from "lucide-react";
-import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
-import {Badge} from "@/components/ui/badge";
 
 export const dynamic = 'force-dynamic';
 
@@ -39,15 +36,6 @@ export default async function Home() {
             <div>
                 <TypographyH1>Restaurant Menus</TypographyH1>
             </div>
-
-            <Alert>
-                <Info className="h-6 w-6" />
-                <AlertTitle>
-                    <TypographyLarge>News 2026-03-07</TypographyLarge></AlertTitle>
-                <AlertDescription>
-                    <TypographyP>Added map feature</TypographyP>
-                </AlertDescription>
-            </Alert>
 
             <RestaurantGrid restaurants={restaurants} />
 

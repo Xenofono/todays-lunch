@@ -35,8 +35,10 @@ export default function RestaurantGrid({ restaurants }: RestaurantGridProps) {
                     </TypographyP>
                 </AlertDescription>
             </Alert>
-            <RestaurantSearchBar/>
-            <SelectRandom restaurantNames={restaurants.map(x => x.name)} />
+            <div className="sticky top-4 z-10 backdrop-blur-sm bg-background/80 rounded-xl p-3 -mx-3 space-y-3 shadow-sm">
+                <RestaurantSearchBar/>
+                <SelectRandom restaurantNames={restaurants.map(x => x.name)} />
+            </div>
             
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {restaurants.map((restaurant) => (

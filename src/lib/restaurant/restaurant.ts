@@ -7,6 +7,7 @@ export abstract class Restaurant {
     static readonly WEEKDAYS_EN = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"] as const;
     static readonly WEEKDAYS_SE = ["måndag", "tisdag", "onsdag", "torsdag", "fredag", "lördag", "söndag"] as const;
     static readonly MENU_TIME = 3600000; // 1 hour in milliseconds
+    static _debugDay: string | undefined = undefined; // override day name for testing
 
     private _currentMenu: DailyMenu = {};
     private _menuFrom: number = -Restaurant.MENU_TIME;
@@ -64,9 +65,7 @@ export abstract class Restaurant {
     }
 
     get menuToday(): string[] {
-        const weekday = new Date().getDay();
-        const day = Restaurant.WEEKDAYS_EN[weekday === 0 ? 6 : weekday - 1]; 
-        return this.menu[day] || [];
+        return this.menu[Restaurant.todayEn()] || [];
     }
 
     get name(): string {
@@ -92,13 +91,14 @@ export abstract class Restaurant {
     protected abstract _getMenu(): Promise<DailyMenu>;
 
     static todayEn(): string {
-        const weekday = new Date().getDay();
-        return Restaurant.WEEKDAYS_EN[weekday === 0 ? 6 : weekday - 1];
+        if (Restaurant._debugDay) return Restaurant._debugDay;
+        const d = new Date().getDay();
+        return Restaurant.WEEKDAYS_EN[d === 0 ? 6 : d - 1];
     }
 
     static todaySe(): string {
-        const weekday = new Date().getDay();
-        return Restaurant.WEEKDAYS_SE[weekday === 0 ? 6 : weekday - 1];
+        const idx = Restaurant.WEEKDAYS_EN.indexOf(Restaurant.todayEn() as typeof Restaurant.WEEKDAYS_EN[number]);
+        return Restaurant.WEEKDAYS_SE[idx];
     }
     
     static daySvToEn (day: string): string {
@@ -108,7 +108,7 @@ export abstract class Restaurant {
     
     static isWeekend(): boolean {
         const today = Restaurant.todayEn()
-        return today == "saturday" || today == "sunday";
+        return ["saturday", "sunday"].includes(today)
     }
 
     static isValidSeDay(day: string): day is VALID_SE_DAYS {

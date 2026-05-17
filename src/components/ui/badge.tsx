@@ -10,7 +10,7 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default:
-          "border-transparent bg-primary text-primary-foreground [a&]:hover:bg-primary/90", 
+          "border-transparent bg-primary text-primary-foreground [a&]:hover:bg-primary/90",
         success:
            "border-transparent bg-success text-primary-foreground [a&]:hover:bg-success/90",
         secondary:
@@ -20,9 +20,14 @@ const badgeVariants = cva(
         outline:
           "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
       },
+      size: {
+        default: "",
+        menuItem: "h-auto py-1.5 px-3 text-sm font-normal leading-snug whitespace-normal break-words max-w-full cursor-default",
+      },
     },
     defaultVariants: {
       variant: "default",
+      size: "default",
     },
   }
 )
@@ -30,6 +35,7 @@ const badgeVariants = cva(
 function Badge({
   className,
   variant,
+  size,
   asChild = false,
   ...props
 }: React.ComponentProps<"span"> &
@@ -39,7 +45,7 @@ function Badge({
   return (
     <Comp
       data-slot="badge"
-      className={cn(badgeVariants({ variant }), className)}
+      className={cn(badgeVariants({ variant, size }), className)}
       {...props}
     />
   )
