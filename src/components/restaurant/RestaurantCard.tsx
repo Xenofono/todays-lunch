@@ -1,20 +1,16 @@
 import {Suspense} from 'react';
 import {Restaurant} from '@/lib/restaurant/restaurant';
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
-import {Badge} from '@/components/ui/badge';
-import {Skeleton} from '@/components/ui/skeleton';
-import {Clock} from 'lucide-react';
-import {TypographyH3} from '@/lib/typography/Typography';
 import RestaurantCardError from "@/components/restaurant/RestaurantCardError";
 import RestaurantCardSuccess from "./RestaurantCardSuccess";
+import RestaurantEntry from "@/components/restaurant/RestaurantEntry";
 
 
 interface RestaurantCardLoaderProps {
     restaurant: Restaurant;
+    num: string;
 }
 
-
-async function RestaurantCardLoader({restaurant}: RestaurantCardLoaderProps) {
+async function RestaurantCardLoader({restaurant, num}: RestaurantCardLoaderProps) {
 
     await restaurant.update();
 
@@ -25,6 +21,7 @@ async function RestaurantCardLoader({restaurant}: RestaurantCardLoaderProps) {
     const didError = restaurant.didError
 
     const props = {
+        num,
         name: restaurant.name,
         url: restaurant.url,
         additionalInformation: restaurant.additionalInformation,
@@ -43,46 +40,33 @@ async function RestaurantCardLoader({restaurant}: RestaurantCardLoaderProps) {
             <RestaurantCardSuccess {...props} />
         )
         : (
-            <RestaurantCardError name={restaurant.name} url={restaurant.url} didErrorMessage={didError}/>
+            <RestaurantCardError
+                num={num}
+                name={restaurant.name}
+                url={restaurant.url}
+                didErrorMessage={didError}
+            />
         )
 
 }
 
-function RestaurantCardSkeleton({name}: { name: string }) {
+function RestaurantEntrySkeleton({name, num}: { name: string, num: string }) {
     return (
-        <Card className="h-full animate-pulse">
-            <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                    <TypographyH3>{name}</TypographyH3>
-                    <Badge variant="secondary">
-                        <Clock className="w-3 h-3 mr-1 animate-spin"/>
-                        Loading
-                    </Badge>
-                </CardTitle>
-                <CardDescription>
-                    <Skeleton className="h-4 w-48"/>
-                </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-                <div className="space-y-2">
-                    <Skeleton className="h-4 w-32"/>
-                    <Skeleton className="h-3 w-full"/>
-                    <Skeleton className="h-3 w-3/4"/>
-                    <Skeleton className="h-3 w-1/2"/>
-                </div>
-                <div className="space-y-2">
-                    <Skeleton className="h-4 w-24"/>
-                    <Skeleton className="h-3 w-16"/>
-                </div>
-            </CardContent>
-        </Card>
+        <RestaurantEntry num={num} name={name}>
+            <div className="mt-3 animate-pulse space-y-2.5">
+                <div className="h-3 w-full bg-hairline"/>
+                <div className="h-3 w-3/4 bg-hairline"/>
+                <div className="h-3 w-1/2 bg-hairline"/>
+            </div>
+        </RestaurantEntry>
     );
 }
 
-export default function RestaurantCard({restaurant}: RestaurantCardLoaderProps) {
+export default function RestaurantCard({restaurant, index}: { restaurant: Restaurant, index: number }) {
+    const num = String(index).padStart(2, "0");
     return (
-        <Suspense fallback={<RestaurantCardSkeleton name={restaurant.name}/>}>
-            <RestaurantCardLoader restaurant={restaurant}/>
+        <Suspense fallback={<RestaurantEntrySkeleton name={restaurant.name} num={num}/>}>
+            <RestaurantCardLoader restaurant={restaurant} num={num}/>
         </Suspense>
     );
 }

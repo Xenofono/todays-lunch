@@ -1,49 +1,35 @@
 "use client"
 
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import {TypographyH3, TypographyP} from "@/lib/typography/Typography";
-import {Badge} from "@/components/ui/badge";
-import {AlertCircle, ExternalLink} from "lucide-react";
-import {Alert, AlertDescription} from "@/components/ui/alert";
+import {useAtomValue} from "jotai";
+import {searchAtom} from "@/store/search";
+import RestaurantEntry from "@/components/restaurant/RestaurantEntry";
+import {TypographyBody, TypographyEditorial} from "@/lib/typography/Typography";
+import {isMatch} from "@/lib/utils";
 
 type RestaurantCardErrorProps = {
+    num: string,
     name: string,
     url: string,
     didErrorMessage: string | undefined
 }
 
-const RestaurantCardError = ({name, url, didErrorMessage}: RestaurantCardErrorProps) => {
+const RestaurantCardError = ({num, name, url, didErrorMessage}: RestaurantCardErrorProps) => {
+    const q = useAtomValue(searchAtom);
 
-    return (<Card className="h-full border-destructive bg-destructive/40">
-        <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-                <TypographyH3>{name}</TypographyH3>
-                <Badge variant="destructive">
-                    <AlertCircle className="w-3 h-3 mr-1"/>
-                    Failed
-                </Badge>
-            </CardTitle>
-            <CardDescription className="flex items-center gap-2">
-                <ExternalLink className="w-4 h-4"/>
-                <a
-                    href={url}
-                    className="hover:underline truncate"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    {url}
-                </a>
-            </CardDescription>
-        </CardHeader>
-        <CardContent>
-            <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4"/>
-                <AlertDescription>
-                    <TypographyP>{didErrorMessage}</TypographyP>
-                </AlertDescription>
-            </Alert>
-        </CardContent>
-    </Card>)
+    if (q && !isMatch(name, q)) return null;
+
+    return (
+        <RestaurantEntry num={num} name={name} url={url}>
+            <TypographyEditorial className="mt-2 text-destructive">
+                Press error — could not reach the source.
+            </TypographyEditorial>
+            {didErrorMessage && (
+                <TypographyBody className="mt-1.5 text-[12px] break-words text-muted-foreground">
+                    {didErrorMessage}
+                </TypographyBody>
+            )}
+        </RestaurantEntry>
+    )
 }
 
 export default RestaurantCardError

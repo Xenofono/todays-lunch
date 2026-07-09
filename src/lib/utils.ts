@@ -5,6 +5,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export function isMatch(text: string, query: string): boolean {
+    return query ? text.toLowerCase().includes(query.toLowerCase()) : false;
+}
+
 export function shuffle<T>(arr: T[]): T[] {
     const a = [...arr];
     for (let i = a.length - 1; i > 0; i--) {

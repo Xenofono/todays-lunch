@@ -1,177 +1,116 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* shadcn/ui custom theme variables */
+/* Lunchbladet — broadsheet newspaper theme */
 @custom-variant dark (&:is(.dark *));
 
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
+  --font-sans: var(--font-archivo);
+  --font-serif: var(--font-dm-serif);
   --color-ring: var(--ring);
-  --color-input: var(--input);
   --color-border: var(--border);
+  --color-hairline: var(--hairline);
+  --color-wash: var(--wash);
+  --color-overlay: var(--overlay);
   --color-destructive: var(--destructive);
-  --color-success: var(--success);
-  --color-warning: var(--warning);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
   --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
 }
 
-
+/* Light mode — "Day edition" (warm cream paper, plum ink, rust accent) */
 :root {
-  --background: #20161F;
-  --foreground: #c59f60;
+  --background: #f3ead9;
+  --foreground: #3a2338;
 
-  --primary: #db924b;
-  --primary-foreground: #000;
+  --primary: #b0672a;
+  --primary-foreground: #f3ead9;
 
-  --secondary: #5a8486;
-  --secondary-foreground: #000;
+  --destructive: #9c3a24;
 
-  --success: #9db787;
-  --success-foreground: #000;
+  --muted: rgba(58, 35, 56, 0.05);
+  --muted-foreground: #8a7488;
 
-  --warning: #ffd25f;
-  --warning-foreground: #000;
+  --accent: #b0672a;
+  --accent-foreground: #f3ead9;
 
-  --destructive: #fc9581;
-  --destructive-foreground: #000;
+  --border: rgba(58, 35, 56, 0.4);
+  --hairline: rgba(58, 35, 56, 0.18);
+  --wash: rgba(58, 35, 56, 0.05);
+  --blob: rgba(219, 146, 75, 0.18);
+  --overlay: rgba(243, 234, 217, 0.85);
 
-  --card: #2c1f2b;
-  --card-foreground: #fff;
-
-  --popover: #3e2b3c;
-  --popover-foreground: #fff;
-
-  --muted: #342d34;
-  --muted-foreground: #b3afb3;
-
-  --accent: #50374d;
-  --accent-foreground: #fff;
-
-  --border: #413841;
-  --input: #1a161a;
-  --ring: #db924b;
-
-  --chart-1: #e1a56b;
-  --chart-2: #b4afa8;
-  --chart-3: #5a8486;
-  --chart-4: #ffd25f;
-  --chart-5: #fc9581;
-
-  --sidebar: #2c1f2b;
-  --sidebar-foreground: #fff;
-  --sidebar-primary: #db924b;
-  --sidebar-primary-foreground: #000;
-  --sidebar-accent: #50374d;
-  --sidebar-accent-foreground: #fff;
-  --sidebar-border: #413841;
-  --sidebar-ring: #db924b;
-
-  --content1: #2c1f2b;
-  --content1-foreground: #fff;
-  --content2: #3e2b3c;
-  --content2-foreground: #fff;
-  --content3: #50374d;
-  --content3-foreground: #fff;
-  --content4: #62435f;
-  --content4-foreground: #fff;
-
-  --focus: #db924b;
-  --overlay: #ffffff;
+  --ring: #b0672a;
 }
 
+/* Dark mode — "Evening edition" (plum paper, cream ink, amber accent) */
 .dark {
-  --background: #20161F;
-  --foreground: #c59f60;
+  --background: #241a23;
+  --foreground: #f0e4d0;
 
   --primary: #db924b;
-  --primary-foreground: #000;
-
-  --secondary: #5a8486;
-  --secondary-foreground: #000;
-
-  --success: #9db787;
-  --success-foreground: #000;
-
-  --warning: #ffd25f;
-  --warning-foreground: #000;
+  --primary-foreground: #241a23;
 
   --destructive: #fc9581;
-  --destructive-foreground: #000;
 
-  --card: #2c1f2b;
-  --card-foreground: #fff;
+  --muted: rgba(240, 228, 208, 0.05);
+  --muted-foreground: #a99070;
 
-  --popover: #3e2b3c;
-  --popover-foreground: #fff;
+  --accent: #db924b;
+  --accent-foreground: #241a23;
 
-  --muted: #342d34;
-  --muted-foreground: #b3afb3;
+  --border: rgba(240, 228, 208, 0.4);
+  --hairline: rgba(240, 228, 208, 0.16);
+  --wash: rgba(240, 228, 208, 0.05);
+  --blob: rgba(219, 146, 75, 0.14);
+  --overlay: rgba(32, 22, 31, 0.85);
 
-  --accent: #50374d;
-  --accent-foreground: #fff;
-
-  --border: #413841;
-  --input: #1a161a;
   --ring: #db924b;
+}
 
-  --chart-1: #e1a56b;
-  --chart-2: #b4afa8;
-  --chart-3: #5a8486;
-  --chart-4: #ffd25f;
-  --chart-5: #fc9581;
+/* Ambient motion & dialog entrances */
+@keyframes drift {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(60px, -40px) scale(1.15); }
+}
 
-  --sidebar: #2c1f2b;
-  --sidebar-foreground: #fff;
-  --sidebar-primary: #db924b;
-  --sidebar-primary-foreground: #000;
-  --sidebar-accent: #50374d;
-  --sidebar-accent-foreground: #fff;
-  --sidebar-border: #413841;
-  --sidebar-ring: #db924b;
+@keyframes slowspin {
+  to { transform: rotate(360deg); }
+}
 
-  --content1: #2c1f2b;
-  --content1-foreground: #fff;
-  --content2: #3e2b3c;
-  --content2-foreground: #fff;
-  --content3: #50374d;
-  --content3-foreground: #fff;
-  --content4: #62435f;
-  --content4-foreground: #fff;
+/* animates the individual scale/opacity properties so it composes with
+   static translate/rotate utilities (positioning never depends on it) */
+@keyframes popin {
+  from { scale: 0.85; opacity: 0; }
+  to { scale: 1; opacity: 1; }
+}
 
-  --focus: #db924b;
-  --overlay: #ffffff;
+@keyframes shake {
+  0%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-2px); }
+  75% { transform: translateY(2px); }
+}
+
+.animate-drift { animation: drift 26s ease-in-out infinite alternate; }
+.animate-slowspin { animation: slowspin 80s linear infinite; }
+.animate-popin { animation: popin 0.35s cubic-bezier(0.2, 1.4, 0.4, 1) both; }
+.animate-popin-lg { animation: popin 0.45s cubic-bezier(0.2, 1.4, 0.4, 1) both; }
+.animate-shake { animation: shake 0.12s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-drift,
+  .animate-slowspin,
+  .animate-popin,
+  .animate-popin-lg,
+  .animate-shake {
+    animation: none;
+  }
 }
 
 @layer base {

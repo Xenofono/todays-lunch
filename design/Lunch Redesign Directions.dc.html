@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&amp;family=Archivo:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=DM+Serif+Display:ital@0;1&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#161016;font-family:Archivo,system-ui,sans-serif}
+a{color:#db924b}a:hover{color:#ffd25f}
+.dv-turn{padding:40px 44px 32px;border-bottom:1px solid rgba(255,255,255,.08);scroll-margin-top:16px}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 8px}
+.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#db924b;color:#20161F;border-radius:4px;text-decoration:none}
+.dv-tname{font:600 13px/1.2 Archivo,sans-serif;color:#f0e4d0}
+.dv-note{max-width:900px;font:400 12.5px/1.6 Archivo,sans-serif;color:rgba(240,228,208,.6);margin:0 0 24px}
+.dv-opts{display:flex;flex-wrap:wrap;gap:36px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px}
+.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(255,255,255,.12);color:#f0e4d0;border-radius:5px;text-decoration:none}
+.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11.5px/1.3 Archivo,sans-serif;color:rgba(240,228,208,.55)}
+.dv-card{max-width:100%;border-radius:10px;box-shadow:0 2px 24px rgba(0,0,0,.4);overflow:hidden}
+.dv-opt:target .dv-oid{background:#db924b;color:#20161F}
+.dv-next{margin:26px 0 0;font:12px/1.5 Archivo,sans-serif;color:rgba(240,228,208,.5)}
+@keyframes tick{to{transform:translateX(-50%)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+@keyframes flick{0%,94%,100%{opacity:1}95%{opacity:.6}97%{opacity:.9}98%{opacity:.5}}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(60px,-40px) scale(1.15)}}
+@keyframes slowspin{to{transform:rotate(360deg)}}
+@keyframes popin{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes shake{0%,100%{transform:translateY(0)}25%{transform:translateY(-2px)}75%{transform:translateY(2px)}}
+</style>
+</helmet>
+
+<section class="dv-turn" id="t2" data-screen-label="Turn 2 — Lunchbladet v2">
+<div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname">Lunchbladet v2 — riff on <a class="dv-oid" href="#1b">1b</a> with the full data model</span></div>
+<p class="dv-note">Now handles every card state from your app: today's menu, expandable weekly menu (auto-opens when a search hits a weekday dish), additional-info line under the name, image-only menus like Blå Dörren (framed "menybild" with a dialog — placeholder until real scrape), and the no-menu-found notice (Florentine here as demo). SÖDERMALM everywhere.</p>
+
+<div class="dv-opts">
+<div class="dv-opt" id="2a">
+<div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a>Lunchbladet v2 — weekly menus, image fallback, info lines</div>
+<div class="dv-card" style="width:1180px">
+<div style="background:var(--bg,#f3ead9);color:var(--ink,#3a2338);font-family:Archivo,sans-serif;position:relative;overflow:hidden;{{ vars3 }}">
+
+  <div style="position:absolute;top:-120px;right:-100px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,var(--blob,rgba(219,146,75,.18)),transparent 65%);animation:drift 26s ease-in-out infinite alternate;animation-play-state:var(--play,running);pointer-events:none"></div>
+  <div style="position:absolute;bottom:40px;left:-60px;font-family:'DM Serif Display',serif;font-size:340px;line-height:1;color:var(--hair,rgba(58,35,56,.1));animation:slowspin 80s linear infinite;animation-play-state:var(--play,running);pointer-events:none;user-select:none">*</div>
+
+  <!-- masthead -->
+  <div style="padding:36px 48px 0;position:relative">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:3px double var(--line,rgba(58,35,56,.4));padding-bottom:6px">
+      <div style="font:600 11.5px/1 Archivo,sans-serif;letter-spacing:.22em;color:var(--mut,#8a7488)">ÅRG. 1 — NR 133</div>
+      <div style="font:600 11.5px/1 Archivo,sans-serif;letter-spacing:.22em;color:var(--mut,#8a7488)">SÖDERMALM · ONSDAG 9 JULI 2026</div>
+      <button onClick="{{ toggle3 }}" style="background:none;border:1px solid var(--line,rgba(58,35,56,.4));border-radius:999px;padding:7px 14px;font:600 11px/1 Archivo,sans-serif;letter-spacing:.1em;color:var(--ink,#3a2338);cursor:pointer" style-hover="background:var(--ink,#3a2338);color:var(--bg,#f3ead9)">{{ themeLabel3 }}</button>
+    </div>
+    <h1 style="margin:14px 0 4px;font-family:'DM Serif Display',serif;font-weight:400;font-size:96px;line-height:.95;letter-spacing:-.015em;text-align:center;color:var(--ink,#3a2338)">Lunchbladet<span style="color:var(--acc,#b0672a)">.</span></h1>
+    <div style="text-align:center;font:italic 400 15px/1.5 'DM Serif Display',serif;color:var(--mut,#8a7488);border-bottom:1px solid var(--hair,rgba(58,35,56,.18));padding-bottom:14px">Tio kök, en tidning, noll beslutsångest — menyerna hämtas direkt från källan.</div>
+    <div style="text-align:center;font:italic 400 13px/1.6 'DM Serif Display',serif;color:var(--acc,#b0672a);padding:10px 0 0">N.B. — På helger &amp; röda dagar kan menyerna vara opålitliga; vi trycker vad restaurangerna själva publicerar.</div>
+  </div>
+
+  <!-- controls -->
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:18px 48px 8px;position:relative">
+    <div style="flex:1;max-width:420px">
+      <div style="font:700 10.5px/1 Archivo,sans-serif;letter-spacing:.24em;color:var(--mut,#8a7488);margin-bottom:8px">EFTERLYSNING</div>
+      <input type="search" placeholder="Sök i veckans alla spalter…" onChange="{{ search3 }}" aria-label="Sök" style="width:100%;box-sizing:border-box;background:transparent;border:none;border-bottom:2px solid var(--ink,#3a2338);font:italic 400 19px/1.3 'DM Serif Display',serif;color:var(--ink,#3a2338);padding:4px 2px 8px;outline:none" style-focus="border-color:var(--acc,#b0672a)">
+    </div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="font:italic 400 15px/1.3 'DM Serif Display',serif;color:var(--mut,#8a7488)">Redaktionen väljer:</div>
+      <div style="min-width:180px;text-align:center;font-family:'DM Serif Display',serif;font-size:19px;color:var(--acc,#b0672a);border-bottom:1px solid var(--hair,rgba(58,35,56,.18));padding:2px 8px 6px;white-space:nowrap;{{ shake3 }}">{{ slotText3 }}</div>
+      <button onClick="{{ spin3 }}" style="background:var(--ink,#3a2338);color:var(--bg,#f3ead9);border:none;border-radius:2px;font:700 12px/1 Archivo,sans-serif;letter-spacing:.16em;padding:13px 20px;cursor:pointer" style-hover="background:var(--acc,#b0672a)" style-active="transform:scale(.96)">SLUMPA</button>
+      <sc-if value="{{ hasWinner3 }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ reset3 }}" style="background:none;border:none;font:italic 400 14px/1 'DM Serif Display',serif;color:var(--mut,#8a7488);cursor:pointer;text-decoration:underline" style-hover="color:var(--ink,#3a2338)">ångra</button>
+      </sc-if>
+    </div>
+  </div>
+
+  <!-- columns -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;column-gap:36px;align-items:start;padding:20px 48px 44px;position:relative">
+    <sc-for list="{{ list3 }}" as="r" hint-placeholder-count="6">
+      <div style="border-top:1px solid var(--line,rgba(58,35,56,.4));padding:16px 2px 20px;opacity:{{ r.dim }};background:{{ r.pick }};transition:all .3s ease" style-hover="background:var(--hov,rgba(58,35,56,.05))">
+        <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:4px">
+          <div style="font:700 11px/1 Archivo,sans-serif;letter-spacing:.1em;color:var(--acc,#b0672a)">{{ r.num }}</div>
+          <div style="font-family:'DM Serif Display',serif;font-size:23px;line-height:1.1;color:var(--ink,#3a2338)">{{ r.name }}</div>
+          <sc-if value="{{ r.hasMap }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ r.openMap }}" style="margin-left:auto;background:none;border:none;padding:2px 0;font:700 10px/1 Archivo,sans-serif;letter-spacing:.16em;color:var(--mut,#8a7488);cursor:pointer;white-space:nowrap" style-hover="color:var(--acc,#b0672a);text-decoration:underline">⌖ KARTA</button>
+          </sc-if>
+        </div>
+        <sc-if value="{{ r.info }}" hint-placeholder-val="{{ false }}">
+          <div style="font:italic 400 12.5px/1.5 'DM Serif Display',serif;color:var(--mut,#8a7488);margin:0 0 8px 21px">{{ r.info }}</div>
+        </sc-if>
+
+        <sc-if value="{{ r.hasToday }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:5px;margin-top:4px">
+            <sc-for list="{{ r.dishes }}" as="d" hint-placeholder-count="3">
+              <div style="font:400 14px/1.5 Archivo,sans-serif;color:{{ d.col2 }};text-decoration:{{ d.deco }};text-underline-offset:3px">— {{ d.text }}</div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ r.hasWeek }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ r.toggleWeek }}" style="display:flex;align-items:center;gap:8px;background:none;border:none;padding:0;margin-top:12px;font:700 10px/1 Archivo,sans-serif;letter-spacing:.18em;color:var(--mut,#8a7488);cursor:pointer" style-hover="color:var(--acc,#b0672a)">{{ r.weekLabel }}<span style="font-size:8px">{{ r.chev }}</span></button>
+          <sc-if value="{{ r.weekOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:10px;margin-top:10px;padding-left:12px;border-left:2px solid var(--hair,rgba(58,35,56,.18))">
+              <sc-for list="{{ r.week }}" as="w" hint-placeholder-count="5">
+                <div>
+                  <div style="font:700 10.5px/1 Archivo,sans-serif;letter-spacing:.18em;color:var(--acc,#b0672a);margin-bottom:4px;text-transform:uppercase">{{ w.day }}</div>
+                  <div style="display:flex;flex-direction:column;gap:3px">
+                    <sc-for list="{{ w.items }}" as="d" hint-placeholder-count="2">
+                      <div style="font:400 13px/1.5 Archivo,sans-serif;color:{{ d.col2 }};text-decoration:{{ d.deco }};text-underline-offset:3px">{{ d.text }}</div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </sc-if>
+
+        <sc-if value="{{ r.imgOnly }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:8px;border:1px solid var(--hair,rgba(58,35,56,.18));padding:14px">
+            <div style="height:84px;background:repeating-linear-gradient(-45deg,var(--hov,rgba(58,35,56,.05)),var(--hov,rgba(58,35,56,.05)) 6px,transparent 6px,transparent 14px);border:1px dashed var(--hair,rgba(58,35,56,.25));display:flex;align-items:center;justify-content:center;margin-bottom:10px">
+              <span style="font:400 10.5px/1 ui-monospace,Menlo,monospace;color:var(--mut,#8a7488)">scrapad menybild (jpg)</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+              <div style="font:italic 400 12.5px/1.4 'DM Serif Display',serif;color:var(--mut,#8a7488)">Trycker menyn endast som bild.</div>
+              <button onClick="{{ r.openImg }}" style="background:none;border:1px solid var(--ink,#3a2338);padding:8px 12px;font:700 10px/1 Archivo,sans-serif;letter-spacing:.14em;color:var(--ink,#3a2338);cursor:pointer;white-space:nowrap" style-hover="background:var(--ink,#3a2338);color:var(--bg,#f3ead9)">VISA MENYBILD</button>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ r.noMenu }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:8px;font:italic 400 13.5px/1.6 'DM Serif Display',serif;color:var(--mut,#8a7488)">Ingen meny i pressläggningen — har köket flyttat sin sida, eller är de lata denna vecka?</div>
+        </sc-if>
+
+        <sc-if value="{{ r.stamp }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:10px;font:700 10px/1 Archivo,sans-serif;letter-spacing:.18em;color:{{ r.stampCol }}">{{ r.stamp }}</div>
+        </sc-if>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- map dialog -->
+  <sc-if value="{{ mapOpen3 }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeMap }}" style="position:absolute;inset:0;background:var(--veil,rgba(243,234,217,.85));backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;z-index:30;cursor:pointer">
+      <div onClick="{{ swallow }}" style="background:var(--bg,#f3ead9);border:3px double var(--ink,#3a2338);padding:24px;animation:popin .35s cubic-bezier(.2,1.4,.4,1) both;cursor:default;width:640px;max-width:90%">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;gap:24px">
+          <div style="font-family:'DM Serif Display',serif;font-size:26px;color:var(--ink,#3a2338)">{{ mapName }} — hitta hit</div>
+          <button onClick="{{ closeMap }}" style="background:none;border:none;font:italic 400 14px/1 'DM Serif Display',serif;color:var(--mut,#8a7488);cursor:pointer;text-decoration:underline" style-hover="color:var(--ink,#3a2338)">stäng</button>
+        </div>
+        <div style="font:italic 400 14px/1.5 'DM Serif Display',serif;color:var(--mut,#8a7488);margin-bottom:14px">{{ mapAddress }}</div>
+        <div style="width:100%;height:340px;box-sizing:border-box;background:repeating-linear-gradient(-45deg,var(--hov,rgba(58,35,56,.05)),var(--hov,rgba(58,35,56,.05)) 8px,transparent 8px,transparent 18px);border:1px dashed var(--hair,rgba(58,35,56,.25));display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+          <span style="font:400 11px/1.8 ui-monospace,Menlo,monospace;color:var(--mut,#8a7488);text-align:center">google maps embed<br>?q={{ mapAddress }}&amp;output=embed</span>
+        </div>
+        <div style="display:flex;justify-content:center;gap:12px">
+          <button style="background:var(--ink,#3a2338);color:var(--bg,#f3ead9);border:none;border-radius:2px;font:700 11px/1 Archivo,sans-serif;letter-spacing:.16em;padding:12px 18px;cursor:pointer" style-hover="background:var(--acc,#b0672a)">PROMENADVÄG</button>
+          <button style="background:none;border:1px solid var(--ink,#3a2338);border-radius:2px;font:700 11px/1 Archivo,sans-serif;letter-spacing:.16em;color:var(--ink,#3a2338);padding:12px 18px;cursor:pointer" style-hover="background:var(--ink,#3a2338);color:var(--bg,#f3ead9)">ÖPPNA DESTINATION</button>
+        </div>
+        <div style="text-align:center;font:italic 400 12px/1.6 'DM Serif Display',serif;color:var(--mut,#8a7488);margin-top:10px">promenad från Östgötagatan 12</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- menu image dialog -->
+  <sc-if value="{{ imgOpen3 }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeImg }}" style="position:absolute;inset:0;background:var(--veil,rgba(243,234,217,.85));backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;z-index:30;cursor:pointer">
+      <div onClick="{{ swallow }}" style="background:var(--bg,#f3ead9);border:3px double var(--ink,#3a2338);padding:24px;animation:popin .35s cubic-bezier(.2,1.4,.4,1) both;cursor:default;max-width:460px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;gap:24px">
+          <div style="font-family:'DM Serif Display',serif;font-size:26px;color:var(--ink,#3a2338)">{{ imgFor }} — menyn</div>
+          <button onClick="{{ closeImg }}" style="background:none;border:none;font:italic 400 14px/1 'DM Serif Display',serif;color:var(--mut,#8a7488);cursor:pointer;text-decoration:underline" style-hover="color:var(--ink,#3a2338)">stäng</button>
+        </div>
+        <div style="width:400px;height:520px;background:repeating-linear-gradient(-45deg,var(--hov,rgba(58,35,56,.05)),var(--hov,rgba(58,35,56,.05)) 8px,transparent 8px,transparent 18px);border:1px dashed var(--hair,rgba(58,35,56,.25));display:flex;align-items:center;justify-content:center">
+          <span style="font:400 11px/1.6 ui-monospace,Menlo,monospace;color:var(--mut,#8a7488);text-align:center">menuImgUrl<br>(restaurangens egen bild, ~1240×1754)</span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- winner toast -->
+  <sc-if value="{{ toast3 }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;background:var(--veil,rgba(243,234,217,.85));backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;z-index:40">
+      <div style="background:var(--bg,#f3ead9);border:3px double var(--ink,#3a2338);padding:36px 44px;text-align:center;animation:popin .45s cubic-bezier(.2,1.4,.4,1) both;max-width:420px;transform:rotate(-1.5deg)">
+        <div style="font:700 11px/1 Archivo,sans-serif;letter-spacing:.3em;color:var(--mut,#8a7488);margin-bottom:10px">EXTRA! EXTRA!</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:40px;line-height:1;color:var(--acc,#b0672a);margin-bottom:8px">{{ winner3 }}</div>
+        <div style="font:italic 400 15px/1.4 'DM Serif Display',serif;color:var(--ink,#3a2338);margin-bottom:16px">Redaktionens dom — no take backsies!</div>
+        <img src="https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUya2dxb2p1eTF0em1zbDBwa21zbXBrNGZxbWhwOHhxaWUwMWU2eGVydiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/DAUiUaCVfBTFe/200w.gif" alt="Nalle Puh" style="max-width:200px;display:block;margin:0 auto;filter:sepia(.3)">
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</div>
+</div>
+</div>
+<p class="dv-next">Try next: "open weekly menus in a side drawer instead" · "give the winner a whole front-page takeover" · "show the error-card state too"</p>
+</section>
+
+<section class="dv-turn" id="t1" data-screen-label="Turn 1 — Two directions">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Two "wildly different" directions for the lunch site</span></div>
+<p class="dv-note">Assumptions: your 10 Södermalm restaurants, compact density, both modes per direction (toggle in each header), weekend/holiday warning kept but relocated — into the ticker in <a class="dv-oid" href="#1a">1a</a>, as a masthead footnote in <a class="dv-oid" href="#1b">1b</a>. Search, slot-machine random pick (Pooh gif intact), ambient motion + hover micro-interactions are live in both mocks. Sample dishes are placeholders for your scraped data.</p>
+
+<div class="dv-opts">
+
+<!-- ============ OPTION 1A — NEON KANTIN ============ -->
+<div class="dv-opt" id="1a">
+<div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Neon Kantin — diner menu-board, big type, marquee ticker · defaults dark</div>
+<div class="dv-card" style="width:1180px">
+<div style="background:var(--bg,#20161F);color:var(--ink,#fff);font-family:Archivo,sans-serif;position:relative;overflow:hidden;{{ vars1 }}">
+
+  <!-- ticker (weekend warning lives here) -->
+  <div style="background:var(--acc,#db924b);color:#1a1016;overflow:hidden;padding:7px 0">
+    <div style="display:flex;white-space:nowrap;animation:tick 26s linear infinite;animation-play-state:var(--play,running);font:700 12px/1 Archivo,sans-serif;letter-spacing:.14em">
+      <span style="padding-right:0">DAGENS LUNCH — SÖDERMALM&nbsp;&nbsp;★&nbsp;&nbsp;MENYER HÄMTAS DIREKT FRÅN RESTAURANGERNA&nbsp;&nbsp;★&nbsp;&nbsp;OBS: HELGER &amp; RÖDA DAGAR = MENYERNA KAN VARA OPÅLITLIGA&nbsp;&nbsp;★&nbsp;&nbsp;10 KÖK · UPPDATERAS VARJE DAG&nbsp;&nbsp;★&nbsp;&nbsp;</span>
+      <span style="padding-right:0">DAGENS LUNCH — SÖDERMALM&nbsp;&nbsp;★&nbsp;&nbsp;MENYER HÄMTAS DIREKT FRÅN RESTAURANGERNA&nbsp;&nbsp;★&nbsp;&nbsp;OBS: HELGER &amp; RÖDA DAGAR = MENYERNA KAN VARA OPÅLITLIGA&nbsp;&nbsp;★&nbsp;&nbsp;10 KÖK · UPPDATERAS VARJE DAG&nbsp;&nbsp;★&nbsp;&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- header -->
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:34px 40px 10px">
+    <div>
+      <div style="font:400 13px/1 Archivo,sans-serif;letter-spacing:.3em;color:var(--mut,#b3afb3);margin-bottom:10px">ONSDAG 9 JULI 2026</div>
+      <h1 style="margin:0;font-family:'Archivo Black',Archivo,sans-serif;font-size:76px;line-height:.92;letter-spacing:-.01em;color:var(--acc,#db924b);text-shadow:0 0 32px var(--glow,rgba(219,146,75,.35));animation:flick 9s linear infinite;animation-play-state:var(--play,running)">DAGENS<br>LUNCH</h1>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:14px;padding-bottom:8px">
+      <button onClick="{{ toggle1 }}" style="display:flex;align-items:center;gap:8px;background:var(--card,#2c1f2b);color:var(--ink,#fff);border:1px solid var(--line,#413841);border-radius:999px;padding:8px 16px;font:600 12px/1 Archivo,sans-serif;letter-spacing:.08em;cursor:pointer" style-hover="border-color:var(--acc,#db924b);color:var(--acc,#db924b)">{{ themeLabel1 }}</button>
+      <div style="font:400 13px/1.5 Archivo,sans-serif;color:var(--mut,#b3afb3);text-align:right;max-width:260px">10 kök inom lunchavstånd.<br>En sida. Noll beslutsångest.</div>
+    </div>
+  </div>
+
+  <!-- controls -->
+  <div style="display:flex;gap:14px;align-items:stretch;padding:18px 40px 6px">
+    <input type="search" placeholder="Sök rätt eller restaurang…" onChange="{{ search1 }}" aria-label="Sök" style="flex:1;background:var(--card,#2c1f2b);border:1px solid var(--line,#413841);border-radius:12px;color:var(--ink,#fff);font:500 15px/1 Archivo,sans-serif;padding:0 18px;height:52px;outline:none" style-focus="border-color:var(--acc,#db924b);box-shadow:0 0 0 3px var(--glow,rgba(219,146,75,.35))">
+    <!-- slot machine -->
+    <div style="display:flex;align-items:center;gap:0;background:var(--card,#2c1f2b);border:1px solid var(--acc,#db924b);border-radius:12px;overflow:hidden;box-shadow:0 0 24px var(--glow,rgba(219,146,75,.2))">
+      <div style="display:flex;flex-direction:column;justify-content:center;gap:5px;padding:0 10px;height:100%">
+        <div style="width:6px;height:6px;border-radius:50%;background:var(--warn,#ffd25f);animation:blink 1s linear infinite;animation-play-state:var(--play,running)"></div>
+        <div style="width:6px;height:6px;border-radius:50%;background:var(--warn,#ffd25f);animation:blink 1s linear infinite .33s;animation-play-state:var(--play,running)"></div>
+        <div style="width:6px;height:6px;border-radius:50%;background:var(--warn,#ffd25f);animation:blink 1s linear infinite .66s;animation-play-state:var(--play,running)"></div>
+      </div>
+      <div style="width:230px;text-align:center;font-family:'Archivo Black',Archivo,sans-serif;font-size:17px;color:var(--warn,#ffd25f);text-transform:uppercase;letter-spacing:.03em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;{{ shake1 }}">{{ slotText1 }}</div>
+      <button onClick="{{ spin1 }}" style="height:52px;border:none;background:var(--acc,#db924b);color:#1a1016;font:800 14px/1 Archivo,sans-serif;letter-spacing:.14em;padding:0 22px;cursor:pointer" style-hover="filter:brightness(1.12)" style-active="transform:scale(.96)">SNURRA</button>
+      <sc-if value="{{ hasWinner1 }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ reset1 }}" style="height:52px;border:none;border-left:1px solid var(--line,#413841);background:transparent;color:var(--mut,#b3afb3);font:600 12px/1 Archivo,sans-serif;padding:0 14px;cursor:pointer" style-hover="color:var(--ink,#fff)">NOLLSTÄLL</button>
+      </sc-if>
+    </div>
+  </div>
+
+  <!-- the board -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:22px 40px 36px">
+    <sc-for list="{{ list1 }}" as="r" hint-placeholder-count="6">
+      <div style="background:var(--card,#2c1f2b);border:1px solid var(--line,#413841);border-radius:14px;padding:18px 22px;opacity:{{ r.dim }};transform:{{ r.scale }};box-shadow:{{ r.glow }};transition:all .35s cubic-bezier(.2,.9,.3,1.2)" style-hover="transform:translateY(-3px);border-color:var(--acc,#db924b)">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px">
+          <div style="font-family:'Archivo Black',Archivo,sans-serif;font-size:22px;text-transform:uppercase;letter-spacing:.02em;color:var(--ink,#fff)">{{ r.name }}</div>
+          <div style="font:700 10.5px/1 Archivo,sans-serif;letter-spacing:.12em;color:var(--acc,#db924b);border:1px solid var(--acc,#db924b);border-radius:999px;padding:5px 10px;white-space:nowrap">{{ r.count }} RÄTTER IDAG</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <sc-for list="{{ r.dishes }}" as="d" hint-placeholder-count="3">
+            <div style="display:flex;align-items:baseline;gap:10px">
+              <div style="width:7px;height:7px;background:var(--acc,#db924b);transform:rotate(45deg);flex:none;position:relative;top:-1px"></div>
+              <div style="font:500 14.5px/1.4 Archivo,sans-serif;color:{{ d.col1 }};font-weight:{{ d.wt }}">{{ d.text }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- winner toast -->
+  <sc-if value="{{ toast1 }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;background:rgba(20,12,20,.75);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:20">
+      <div style="background:var(--card,#2c1f2b);border:2px solid var(--acc,#db924b);border-radius:20px;padding:32px 40px;text-align:center;box-shadow:0 0 60px var(--glow,rgba(219,146,75,.4));animation:popin .45s cubic-bezier(.2,1.4,.4,1) both;max-width:420px">
+        <div style="font:700 12px/1 Archivo,sans-serif;letter-spacing:.3em;color:var(--mut,#b3afb3);margin-bottom:12px">DU ÄTER PÅ</div>
+        <div style="font-family:'Archivo Black',Archivo,sans-serif;font-size:38px;color:var(--warn,#ffd25f);text-transform:uppercase;line-height:1;margin-bottom:8px">{{ winner1 }}</div>
+        <div style="font:400 14px/1.4 Archivo,sans-serif;color:var(--mut,#b3afb3);margin-bottom:16px">No take backsies!</div>
+        <img src="https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUya2dxb2p1eTF0em1zbDBwa21zbXBrNGZxbWhwOHhxaWUwMWU2eGVydiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/DAUiUaCVfBTFe/200w.gif" alt="Nalle Puh" style="border-radius:12px;max-width:200px;display:block;margin:0 auto">
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</div>
+</div>
+
+<!-- ============ OPTION 1B — LUNCHBLADET ============ -->
+<div class="dv-opt" id="1b">
+<div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Lunchbladet — broadsheet poster, serif masthead, hairlines · defaults light (warm cream + plum)</div>
+<div class="dv-card" style="width:1180px">
+<div style="background:var(--bg,#f3ead9);color:var(--ink,#3a2338);font-family:Archivo,sans-serif;position:relative;overflow:hidden;{{ vars2 }}">
+
+  <!-- ambient ornaments -->
+  <div style="position:absolute;top:-120px;right:-100px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,var(--blob,rgba(219,146,75,.18)),transparent 65%);animation:drift 26s ease-in-out infinite alternate;animation-play-state:var(--play,running);pointer-events:none"></div>
+  <div style="position:absolute;bottom:40px;left:-60px;font-family:'DM Serif Display',serif;font-size:340px;line-height:1;color:var(--hair,rgba(58,35,56,.1));animation:slowspin 80s linear infinite;animation-play-state:var(--play,running);pointer-events:none;user-select:none">*</div>
+
+  <!-- masthead -->
+  <div style="padding:36px 48px 0;position:relative">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:3px double var(--line,rgba(58,35,56,.4));padding-bottom:6px">
+      <div style="font:600 11.5px/1 Archivo,sans-serif;letter-spacing:.22em;color:var(--mut,#8a7488)">ÅRG. 1 — NR 132</div>
+      <div style="font:600 11.5px/1 Archivo,sans-serif;letter-spacing:.22em;color:var(--mut,#8a7488)">SÖDERMALM · ONSDAG 9 JULI 2026</div>
+      <button onClick="{{ toggle2 }}" style="background:none;border:1px solid var(--line,rgba(58,35,56,.4));border-radius:999px;padding:7px 14px;font:600 11px/1 Archivo,sans-serif;letter-spacing:.1em;color:var(--ink,#3a2338);cursor:pointer" style-hover="background:var(--ink,#3a2338);color:var(--bg,#f3ead9)">{{ themeLabel2 }}</button>
+    </div>
+    <h1 style="margin:14px 0 4px;font-family:'DM Serif Display',serif;font-weight:400;font-size:96px;line-height:.95;letter-spacing:-.015em;text-align:center;color:var(--ink,#3a2338)">Lunchbladet<span style="color:var(--acc,#b0672a)">.</span></h1>
+    <div style="text-align:center;font:italic 400 15px/1.5 'DM Serif Display',serif;color:var(--mut,#8a7488);border-bottom:1px solid var(--hair,rgba(58,35,56,.18));padding-bottom:14px">Tio kök, en tidning, noll beslutsångest — menyerna hämtas direkt från källan.</div>
+    <!-- relocated weekend warning -->
+    <div style="text-align:center;font:italic 400 13px/1.6 'DM Serif Display',serif;color:var(--acc,#b0672a);padding:10px 0 0">N.B. — På helger &amp; röda dagar kan menyerna vara opålitliga; vi trycker vad restaurangerna själva publicerar.</div>
+  </div>
+
+  <!-- controls -->
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:18px 48px 8px;position:relative">
+    <div style="flex:1;max-width:420px">
+      <div style="font:700 10.5px/1 Archivo,sans-serif;letter-spacing:.24em;color:var(--mut,#8a7488);margin-bottom:8px">EFTERLYSNING</div>
+      <input type="search" placeholder="Sök i dagens spalter…" onChange="{{ search2 }}" aria-label="Sök" style="width:100%;box-sizing:border-box;background:transparent;border:none;border-bottom:2px solid var(--ink,#3a2338);font:italic 400 19px/1.3 'DM Serif Display',serif;color:var(--ink,#3a2338);padding:4px 2px 8px;outline:none" style-focus="border-color:var(--acc,#b0672a)">
+    </div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="font:italic 400 15px/1.3 'DM Serif Display',serif;color:var(--mut,#8a7488)">Redaktionen väljer:</div>
+      <div style="min-width:180px;text-align:center;font-family:'DM Serif Display',serif;font-size:19px;color:var(--acc,#b0672a);border-bottom:1px solid var(--hair,rgba(58,35,56,.18));padding:2px 8px 6px;white-space:nowrap;{{ shake2 }}">{{ slotText2 }}</div>
+      <button onClick="{{ spin2 }}" style="background:var(--ink,#3a2338);color:var(--bg,#f3ead9);border:none;border-radius:2px;font:700 12px/1 Archivo,sans-serif;letter-spacing:.16em;padding:13px 20px;cursor:pointer" style-hover="background:var(--acc,#b0672a)" style-active="transform:scale(.96)">SLUMPA</button>
+      <sc-if value="{{ hasWinner2 }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ reset2 }}" style="background:none;border:none;font:italic 400 14px/1 'DM Serif Display',serif;color:var(--mut,#8a7488);cursor:pointer;text-decoration:underline" style-hover="color:var(--ink,#3a2338)">ångra</button>
+      </sc-if>
+    </div>
+  </div>
+
+  <!-- columns -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;column-gap:36px;row-gap:0;padding:20px 48px 44px;position:relative">
+    <sc-for list="{{ list2 }}" as="r" hint-placeholder-count="6">
+      <div style="border-top:1px solid var(--line,rgba(58,35,56,.4));padding:16px 2px 20px;opacity:{{ r.dim }};background:{{ r.pick }};transition:all .3s ease" style-hover="background:var(--hov,rgba(58,35,56,.05))">
+        <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:8px">
+          <div style="font:700 11px/1 Archivo,sans-serif;letter-spacing:.1em;color:var(--acc,#b0672a)">{{ r.num }}</div>
+          <div style="font-family:'DM Serif Display',serif;font-size:23px;line-height:1.1;color:var(--ink,#3a2338)">{{ r.name }}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:5px">
+          <sc-for list="{{ r.dishes }}" as="d" hint-placeholder-count="3">
+            <div style="font:400 14px/1.5 Archivo,sans-serif;color:{{ d.col2 }};text-decoration:{{ d.deco }};text-underline-offset:3px">— {{ d.text }}</div>
+          </sc-for>
+        </div>
+        <div style="margin-top:10px;font:700 10px/1 Archivo,sans-serif;letter-spacing:.18em;color:{{ r.stampCol }}">{{ r.stamp }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- winner toast -->
+  <sc-if value="{{ toast2 }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;background:var(--veil,rgba(243,234,217,.85));backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;z-index:20">
+      <div style="background:var(--bg,#f3ead9);border:3px double var(--ink,#3a2338);padding:36px 44px;text-align:center;animation:popin .45s cubic-bezier(.2,1.4,.4,1) both;max-width:420px;transform:rotate(-1.5deg)">
+        <div style="font:700 11px/1 Archivo,sans-serif;letter-spacing:.3em;color:var(--mut,#8a7488);margin-bottom:10px">EXTRA! EXTRA!</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:40px;line-height:1;color:var(--acc,#b0672a);margin-bottom:8px">{{ winner2 }}</div>
+        <div style="font:italic 400 15px/1.4 'DM Serif Display',serif;color:var(--ink,#3a2338);margin-bottom:16px">Redaktionens dom — no take backsies!</div>
+        <img src="https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUya2dxb2p1eTF0em1zbDBwa21zbXBrNGZxbWhwOHhxaWUwMWU2eGVydiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/DAUiUaCVfBTFe/200w.gif" alt="Nalle Puh" style="max-width:200px;display:block;margin:0 auto;filter:sepia(.3)">
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "make <a class="dv-oid" href="#1a">1a</a> light mode the default" · "mix <a class="dv-oid" href="#1b">1b</a>'s masthead with <a class="dv-oid" href="#1a">1a</a>'s slot machine" · "new directions"</p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;reduceMotion&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: false, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Motion&quot;}, &quot;winnerFocus&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;dim&quot;, &quot;hide&quot;], &quot;default&quot;: &quot;dim&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Random picker&quot;}}">
+class Component extends DCLogic {
+  RESTAURANTS = [
+    { name: "Oliver Twist", dishes: ["Fish & chips med remoulad", "Köttbullar med gräddsås & lingon", "Vegetarisk lasagne"] },
+    { name: "Kvarnen", dishes: ["Pannbiff med stekt lök", "Stekt strömming med skirat smör", "Falafel med bulgursallad"] },
+    { name: "Bastard Burgers", dishes: ["Smash burger 160 g", "Truffle bacon burger", "Green chick (vegansk)"] },
+    { name: "Deli di Luca", dishes: ["Pasta al limone", "Porchetta-ciabatta", "Capresesallad"] },
+    { name: "Biblioteket Live", dishes: ["Dagens fisk med dillstuvad potatis", "Wallenbergare med ärtpuré", "Grönsakscurry med ris"] },
+    { name: "Bistroteket", dishes: ["Boeuf bourguignon", "Moules frites", "Ratatouille med chèvre"] },
+    { name: "Blå Dörren", dishes: ["Isterband med rårörda lingon", "Raggmunk med stekt fläsk", "Svamprisotto"] },
+    { name: "Usine", dishes: ["Pokébowl med lax", "Kycklingspett med jasminris", "Halloumibowl"] },
+    { name: "Florentine", dishes: ["Pizza margherita", "Saltimbocca alla romana", "Gnocchi al pesto"] },
+    { name: "Invece", dishes: ["Tagliatelle al ragù", "Melanzane alla parmigiana", "Branzino al forno"] }
+  ];
+
+  R2 = [
+    { name: "Oliver Twist", address: "Repslagargatan 6", info: "Lunch 11–14 · inkl. sallad, bröd & kaffe", today: ["Fish & chips med remoulad", "Köttbullar med gräddsås & lingon", "Vegetarisk lasagne"], week: [
+      { day: "Måndag", items: ["Kycklinglevergryta med ris", "Raggmunk med stekt fläsk"] },
+      { day: "Tisdag", items: ["Pasta carbonara", "Panerad rödspätta med remoulad"] },
+      { day: "Onsdag", items: ["Fish & chips med remoulad", "Köttbullar med gräddsås & lingon", "Vegetarisk lasagne"] },
+      { day: "Torsdag", items: ["Ärtsoppa & pannkakor", "Kycklingschnitzel med citron"] },
+      { day: "Fredag", items: ["Helstekt fläskkarré", "Laxpudding med skirat smör"] } ] },
+    { name: "Kvarnen", address: "Tjärhovsgatan 4", info: "Husmanskost sedan 1908", today: ["Pannbiff med stekt lök", "Stekt strömming", "Falafel med bulgur"], week: [
+      { day: "Måndag", items: ["Dillkött på kalv", "Morotsbiffar med tzatziki"] },
+      { day: "Tisdag", items: ["Kålpudding med lingon", "Fisksoppa med aioli"] },
+      { day: "Onsdag", items: ["Pannbiff med stekt lök", "Stekt strömming", "Falafel med bulgur"] },
+      { day: "Torsdag", items: ["Ärtsoppa & pannkakor", "Sjömansbiff"] },
+      { day: "Fredag", items: ["Flygande Jakob", "Rimmad lax med dillstuvad potatis"] } ] },
+    { name: "Bastard Burgers", address: "Götgatan 46", info: "Samma meny hela veckan · veganskt finns", today: ["Smash burger 160 g", "Truffle bacon burger", "Green chick (vegansk)"] },
+    { name: "Deli di Luca", today: ["Pasta al limone", "Porchetta-ciabatta", "Capresesallad"], week: [
+      { day: "Måndag", items: ["Lasagne al forno", "Insalata di pollo"] },
+      { day: "Tisdag", items: ["Risotto ai funghi", "Piadina med prosciutto"] },
+      { day: "Onsdag", items: ["Pasta al limone", "Porchetta-ciabatta", "Capresesallad"] },
+      { day: "Torsdag", items: ["Gnocchi al pomodoro", "Vitello tonnato"] },
+      { day: "Fredag", items: ["Pizza bianca", "Saltimbocca"] } ] },
+    { name: "Biblioteket Live", address: "Medborgarplatsen 4", info: "Bordsservering · vatten & kaffe ingår", today: ["Dagens fisk med dillstuvad potatis", "Wallenbergare med ärtpuré", "Grönsakscurry med ris"], week: [
+      { day: "Måndag", items: ["Biff Rydberg", "Bakad blomkål med brynt smör"] },
+      { day: "Tisdag", items: ["Torskrygg med äggsås", "Kycklingfrikassé"] },
+      { day: "Onsdag", items: ["Dagens fisk med dillstuvad potatis", "Wallenbergare med ärtpuré", "Grönsakscurry med ris"] },
+      { day: "Torsdag", items: ["Ärtsoppa & pannkakor", "Pulled pork-bowl"] },
+      { day: "Fredag", items: ["Oxsvansragu med polenta", "Sotad lax med citronaioli"] } ] },
+    { name: "Bistroteket", address: "Katarina Bangata 17", info: "Vegetariskt alternativ finns alltid", today: ["Boeuf bourguignon", "Moules frites", "Ratatouille med chèvre"], week: [
+      { day: "Måndag", items: ["Coq au vin", "Quiche Lorraine"] },
+      { day: "Tisdag", items: ["Steak frites", "Soupe à l'oignon"] },
+      { day: "Onsdag", items: ["Boeuf bourguignon", "Moules frites", "Ratatouille med chèvre"] },
+      { day: "Torsdag", items: ["Confit de canard", "Crêpes med svamp"] },
+      { day: "Fredag", items: ["Bouillabaisse", "Entrecôte med béarnaise"] } ] },
+    { name: "Blå Dörren", address: "Södermalmstorg 6", info: "Publicerar endast menyn som bild", imgOnly: true },
+    { name: "Usine", address: "Södermalmsallén 36", today: ["Pokébowl med lax", "Kycklingspett med jasminris", "Halloumibowl"], week: [
+      { day: "Måndag", items: ["Ramen med fläsksida", "Tofubowl med sesam"] },
+      { day: "Tisdag", items: ["Bibimbap", "Vietnamesisk bún-sallad"] },
+      { day: "Onsdag", items: ["Pokébowl med lax", "Kycklingspett med jasminris", "Halloumibowl"] },
+      { day: "Torsdag", items: ["Pad thai med räkor", "Currywok med grönsaker"] },
+      { day: "Fredag", items: ["Katsu curry", "Dumplings med ponzu"] } ] },
+    { name: "Florentine", address: "Ringvägen 98", noMenu: true },
+    { name: "Invece", address: "Åsögatan 140", today: ["Tagliatelle al ragù", "Melanzane alla parmigiana", "Branzino al forno"], week: [
+      { day: "Måndag", items: ["Orecchiette con salsiccia", "Panzanella"] },
+      { day: "Tisdag", items: ["Spaghetti alle vongole", "Pollo al mattone"] },
+      { day: "Onsdag", items: ["Tagliatelle al ragù", "Melanzane alla parmigiana", "Branzino al forno"] },
+      { day: "Torsdag", items: ["Risotto allo zafferano", "Polpette al sugo"] },
+      { day: "Fredag", items: ["Pizza diavola", "Tonno alla griglia"] } ] }
+  ];
+
+  state = {
+    theme1: "dark", theme2: "light", theme3: "light",
+    q1: "", q2: "", q3: "",
+    slot1: "", slot2: "", slot3: "",
+    spinning1: false, spinning2: false, spinning3: false,
+    winner1: null, winner2: null, winner3: null,
+    toast1: false, toast2: false, toast3: false,
+    expanded: {}, imgFor: null, mapFor: null
+  };
+
+  spin(opt) {
+    if (this.state["spinning" + opt]) return;
+    const names = this.RESTAURANTS.map(r => r.name);
+    const start = Math.floor(Math.random() * names.length);
+    const total = 20 + Math.floor(Math.random() * 10);
+    this.setState({ ["spinning" + opt]: true, ["winner" + opt]: null, ["toast" + opt]: false });
+    const step = (n) => {
+      this.setState({ ["slot" + opt]: names[(start + n) % names.length] });
+      if (n >= total) {
+        const w = names[(start + n) % names.length];
+        this.setState({ ["winner" + opt]: w, ["spinning" + opt]: false, ["toast" + opt]: true });
+        this["t" + opt] = setTimeout(() => this.setState({ ["toast" + opt]: false }), 4500);
+      } else {
+        setTimeout(() => step(n + 1), 45 + Math.pow(n / total, 2.2) * 240);
+      }
+    };
+    step(0);
+  }
+
+  reset(opt) {
+    clearTimeout(this["t" + opt]);
+    this.setState({ ["winner" + opt]: null, ["slot" + opt]: "", ["toast" + opt]: false, ["spinning" + opt]: false });
+  }
+
+  buildList(q, winner, focus) {
+    const ql = q.trim().toLowerCase();
+    let list = this.RESTAURANTS.map((r, i) => {
+      const dishes = r.dishes.map(t => {
+        const hit = !!ql && t.toLowerCase().includes(ql);
+        return {
+          text: t,
+          hit,
+          col1: hit ? "var(--warn,#ffd25f)" : "var(--ink,#fff)",
+          wt: hit ? "700" : "500",
+          col2: hit ? "var(--acc,#b0672a)" : "var(--ink,#3a2338)",
+          deco: hit ? "underline" : "none"
+        };
+      });
+      const nameHit = !!ql && r.name.toLowerCase().includes(ql);
+      const show = !ql || nameHit || dishes.some(d => d.hit);
+      const isWinner = winner === r.name;
+      const dimmed = !!winner && !isWinner;
+      return {
+        name: r.name,
+        num: String(i + 1).padStart(2, "0"),
+        count: r.dishes.length,
+        dishes, show, isWinner, dimmed
+      };
+    }).filter(x => x.show);
+    if (winner && focus === "hide") list = list.filter(x => x.isWinner);
+    return list.map(x => ({
+      ...x,
+      dim: x.dimmed ? "0.25" : "1",
+      scale: x.isWinner ? "scale(1.02)" : "none",
+      glow: x.isWinner ? "0 0 0 2px var(--acc,#db924b), 0 8px 40px var(--glow,rgba(219,146,75,.4))" : "none",
+      pick: x.isWinner ? "var(--hov,rgba(176,103,42,.1))" : "transparent",
+      stamp: x.isWinner ? "★ REDAKTIONENS VAL" : "",
+      stampCol: "var(--acc,#b0672a)"
+    }));
+  }
+
+  buildList2(q, winner, focus) {
+    const ql = q.trim().toLowerCase();
+    const mark = (t) => {
+      const hit = !!ql && t.toLowerCase().includes(ql);
+      return { text: t, hit, col2: hit ? "var(--acc,#b0672a)" : "var(--ink,#3a2338)", deco: hit ? "underline" : "none" };
+    };
+    let list = this.R2.map((r, i) => {
+      const dishes = (r.today || []).map(mark);
+      const week = (r.week || []).map(w => ({ day: w.day, items: w.items.map(mark) }));
+      const weekHit = week.some(w => w.items.some(d => d.hit));
+      const nameHit = !!ql && r.name.toLowerCase().includes(ql);
+      const show = !ql || nameHit || dishes.some(d => d.hit) || weekHit;
+      const isWinner = winner === r.name;
+      const weekItems = week.reduce((a, w) => a + w.items.length, 0);
+      const open = !!this.state.expanded[r.name] || (!!ql && weekHit);
+      return {
+        name: r.name,
+        num: String(i + 1).padStart(2, "0"),
+        info: r.info || null,
+        dishes, hasToday: dishes.length > 0,
+        week, hasWeek: week.length > 0,
+        weekOpen: open,
+        chev: open ? "▲" : "▼",
+        weekLabel: "HELA VECKAN — " + week.length + " DAGAR · " + weekItems + " RÄTTER",
+        toggleWeek: () => this.setState(s => ({ expanded: { ...s.expanded, [r.name]: !open } })),
+        imgOnly: !!r.imgOnly,
+        openImg: () => this.setState({ imgFor: r.name }),
+        noMenu: !!r.noMenu,
+        hasMap: !!r.address,
+        openMap: () => this.setState({ mapFor: { name: r.name, address: r.address } }),
+        show, isWinner, dimmed: !!winner && !isWinner
+      };
+    }).filter(x => x.show);
+    if (winner && focus === "hide") list = list.filter(x => x.isWinner);
+    return list.map(x => ({
+      ...x,
+      dim: x.dimmed ? "0.25" : "1",
+      pick: x.isWinner ? "var(--hov,rgba(176,103,42,.1))" : "transparent",
+      stamp: x.isWinner ? "★ REDAKTIONENS VAL" : "",
+      stampCol: "var(--acc,#b0672a)"
+    }));
+  }
+
+  renderVals() {
+    const reduce = this.props.reduceMotion ?? false;
+    const focus = this.props.winnerFocus ?? "dim";
+    const play = "--play:" + (reduce ? "paused" : "running");
+
+    const P = {
+      neonDark: "--bg:#20161F;--card:#2c1f2b;--ink:#fff;--mut:#b3afb3;--acc:#db924b;--warn:#ffd25f;--line:#413841;--glow:rgba(219,146,75,.35)",
+      neonLight: "--bg:#f4e9d6;--card:#fdf6ea;--ink:#3a2338;--mut:#7d6a7b;--acc:#a85f22;--warn:#8a5400;--line:#e0cdae;--glow:rgba(168,95,34,.22)",
+      bladLight: "--bg:#f3ead9;--ink:#3a2338;--mut:#8a7488;--acc:#b0672a;--line:rgba(58,35,56,.4);--hair:rgba(58,35,56,.18);--hov:rgba(58,35,56,.05);--blob:rgba(219,146,75,.18);--veil:rgba(243,234,217,.85)",
+      bladDark: "--bg:#241a23;--ink:#f0e4d0;--mut:#a99070;--acc:#db924b;--line:rgba(240,228,208,.4);--hair:rgba(240,228,208,.16);--hov:rgba(240,228,208,.05);--blob:rgba(219,146,75,.14);--veil:rgba(32,22,31,.85)"
+    };
+
+    const s = this.state;
+    const shake = "animation:shake .12s linear infinite;";
+
+    return {
+      vars1: (s.theme1 === "dark" ? P.neonDark : P.neonLight) + ";" + play,
+      vars2: (s.theme2 === "light" ? P.bladLight : P.bladDark) + ";" + play,
+      themeLabel1: s.theme1 === "dark" ? "☾ MÖRKT — VÄXLA" : "☀ LJUST — VÄXLA",
+      themeLabel2: s.theme2 === "light" ? "LJUS UPPLAGA" : "KVÄLLSUPPLAGA",
+      toggle1: () => this.setState({ theme1: s.theme1 === "dark" ? "light" : "dark" }),
+      toggle2: () => this.setState({ theme2: s.theme2 === "light" ? "dark" : "light" }),
+      search1: (e) => this.setState({ q1: e.target.value }),
+      search2: (e) => this.setState({ q2: e.target.value }),
+      list1: this.buildList(s.q1, s.winner1, focus),
+      list2: this.buildList(s.q2, s.winner2, focus),
+      spin1: () => this.spin(1),
+      spin2: () => this.spin(2),
+      reset1: () => this.reset(1),
+      reset2: () => this.reset(2),
+      slotText1: s.slot1 || "VEM VET …",
+      slotText2: s.slot2 || "— osignerat —",
+      shake1: s.spinning1 && !reduce ? shake : "",
+      shake2: s.spinning2 && !reduce ? shake : "",
+      hasWinner1: !!s.winner1,
+      hasWinner2: !!s.winner2,
+      winner1: s.winner1,
+      winner2: s.winner2,
+      toast1: s.toast1,
+      toast2: s.toast2,
+      vars3: (s.theme3 === "light" ? P.bladLight : P.bladDark) + ";" + play,
+      themeLabel3: s.theme3 === "light" ? "LJUS UPPLAGA" : "KVÄLLSUPPLAGA",
+      toggle3: () => this.setState({ theme3: s.theme3 === "light" ? "dark" : "light" }),
+      search3: (e) => this.setState({ q3: e.target.value }),
+      list3: this.buildList2(s.q3, s.winner3, focus),
+      spin3: () => this.spin(3),
+      reset3: () => this.reset(3),
+      slotText3: s.slot3 || "— osignerat —",
+      shake3: s.spinning3 && !reduce ? shake : "",
+      hasWinner3: !!s.winner3,
+      winner3: s.winner3,
+      toast3: s.toast3,
+      imgOpen3: !!s.imgFor,
+      imgFor: s.imgFor,
+      closeImg: (e) => { e.stopPropagation(); this.setState({ imgFor: null }); },
+      mapOpen3: !!s.mapFor,
+      mapName: s.mapFor ? s.mapFor.name : "",
+      mapAddress: s.mapFor ? s.mapFor.address + ", Stockholm" : "",
+      closeMap: (e) => { e.stopPropagation(); this.setState({ mapFor: null }); },
+      swallow: (e) => e.stopPropagation()
+    };
+  }
+}
+</script>
+</body>
+</html>
