@@ -92,8 +92,10 @@ export abstract class Restaurant {
 
     static todayEn(): string {
         if (Restaurant._debugDay) return Restaurant._debugDay;
-        const d = new Date().getDay();
-        return Restaurant.WEEKDAYS_EN[d === 0 ? 6 : d - 1];
+        // the server may run in UTC; the menus are for Stockholm's "today"
+        return new Intl.DateTimeFormat("en-GB", { weekday: "long", timeZone: "Europe/Stockholm" })
+            .format(new Date())
+            .toLowerCase();
     }
 
     static todaySe(): string {
@@ -109,6 +111,39 @@ export abstract class Restaurant {
     static isWeekend(): boolean {
         const today = Restaurant.todayEn()
         return ["saturday", "sunday"].includes(today)
+    }
+
+    private static readonly DAY_HEADERS_SE = Restaurant.WEEKDAYS_SE.map(
+        day => new RegExp(`^${day}(?![a-zåäö])`, "i")
+    );
+    // the trailing class only admits times/punctuation, so a day-range dish
+    // header like "Måndag–Fredag: Grönsakssoppa" is NOT treated as opening hours
+    private static readonly OPENING_HOURS_RANGE_SE = new RegExp(
+        `^(${Restaurant.WEEKDAYS_SE.join("|")})\\s*(till|[-–—])\\s*(${Restaurant.WEEKDAYS_SE.join("|")})[\\s0-9:.,–—-]*$`,
+        "i"
+    );
+
+    /**
+     * Matches a line that starts with a Swedish weekday (with or without a
+     * trailing colon), e.g. "Måndag:  Biff ..." or "Tisdag  BBQ ...".
+     * Returns the English day plus any menu text on the same line.
+     */
+    static matchDayHeader(line: string): { dayEn: string; rest: string } | null {
+        for (let i = 0; i < Restaurant.DAY_HEADERS_SE.length; i++) {
+            const match = Restaurant.DAY_HEADERS_SE[i].exec(line);
+            if (match) {
+                return {
+                    dayEn: Restaurant.WEEKDAYS_EN[i],
+                    rest: line.slice(match[0].length).replace(/^[:\s]+/, "").trim(),
+                };
+            }
+        }
+        return null;
+    }
+
+    /** Matches opening-hours ranges like "Måndag till Fredag 11-14". */
+    static isOpeningHoursRange(line: string): boolean {
+        return Restaurant.OPENING_HOURS_RANGE_SE.test(line);
     }
 
     static isValidSeDay(day: string): day is VALID_SE_DAYS {

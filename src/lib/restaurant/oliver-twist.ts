@@ -79,34 +79,26 @@ export class OliverTwist extends Restaurant {
         for (let line of lines) {
             line = line.trim();
             if (!line) continue;
+            if (/hela veckan/i.test(line)) break;
+            if (Restaurant.isOpeningHoursRange(line)) continue;
 
-            // Check for day headers
-            for (let i = 0; i < Restaurant.WEEKDAYS_SE.length; i++) {
-                const daySe = Restaurant.WEEKDAYS_SE[i];
-                const dayEn = Restaurant.WEEKDAYS_EN[i];
-
-                if (line.toLowerCase().includes(daySe.toLowerCase())) {
-                    currentDay = dayEn;
-                    menu[currentDay] = [];
-                    // Extract any text after the day name
-                    const afterDay = line.split(':').slice(1).join(':').trim();
-                    if (afterDay) menu[currentDay].push(afterDay);
-                    break;
-                }
+            // Day headers start the line; the colon after the day name is not
+            // guaranteed ("Måndag:  Biff ..." vs "Tisdag  BBQglaserad ...")
+            const header = Restaurant.matchDayHeader(line);
+            if (header) {
+                currentDay = header.dayEn;
+                menu[currentDay] ??= [];
+                if (header.rest) menu[currentDay].push(header.rest);
+                continue;
             }
 
             if (!currentDay) continue;
-            if (/hela veckan/i.test(line)) break;
 
-
-            if (currentDay && !Restaurant.WEEKDAYS_SE.some(day =>line.toLowerCase().includes(day.toLowerCase())
-            )) {
-                // Check if it's a continuation (starts with lowercase)
-                if (menu[currentDay].length > 0 && line[0] === line[0].toLowerCase()) {
-                    menu[currentDay][menu[currentDay].length - 1] += ` ${line}`;
-                } else {
-                    menu[currentDay].push(line);
-                }
+            // Check if it's a continuation (starts with lowercase)
+            if (menu[currentDay].length > 0 && line[0] === line[0].toLowerCase()) {
+                menu[currentDay][menu[currentDay].length - 1] += ` ${line}`;
+            } else {
+                menu[currentDay].push(line);
             }
         }
 

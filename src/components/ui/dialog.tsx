@@ -38,7 +38,7 @@ function DialogOverlay({
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
       className={cn(
-        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50",
+        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-overlay backdrop-blur-[3px]",
         className
       )}
       {...props}
@@ -60,7 +60,7 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border p-6 shadow-lg duration-200 sm:max-w-lg",
+          "bg-background animate-popin fixed top-[50%] left-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 border-[3px] border-double border-foreground p-6 sm:max-w-lg",
           className
         )}
         {...props}
@@ -87,6 +87,32 @@ function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
       className={cn("flex flex-col gap-2 text-center sm:text-left", className)}
       {...props}
     />
+  )
+}
+
+/**
+ * The newspaper dialog header: serif title on the left, an italic "close"
+ * text link on the right. Use with showCloseButton={false} on DialogContent.
+ */
+function DialogHeaderRow({
+  title,
+  className,
+}: {
+  title: React.ReactNode
+  className?: string
+}) {
+  return (
+    <div
+      data-slot="dialog-header-row"
+      className={cn("flex items-baseline justify-between gap-6", className)}
+    >
+      <DialogTitle className="font-serif text-[20px] font-normal leading-tight text-foreground sm:text-[26px]">
+        {title}
+      </DialogTitle>
+      <DialogClose className="cursor-pointer font-serif text-[14px] italic leading-none text-muted-foreground underline transition-colors hover:text-foreground">
+        close
+      </DialogClose>
+    </div>
   )
 }
 
@@ -136,6 +162,7 @@ export {
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogHeaderRow,
   DialogOverlay,
   DialogPortal,
   DialogTitle,

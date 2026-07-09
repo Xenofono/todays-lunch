@@ -41,7 +41,7 @@ export class DeliDiLuca extends Restaurant {
             const dayEn = Restaurant.daySvToEn(day.text().toLowerCase());
             menu[dayEn] = [];
             
-            for (let meal of meals) {
+            for (const meal of meals) {
                 menu[dayEn].push($(meal).text())
             }
         }
