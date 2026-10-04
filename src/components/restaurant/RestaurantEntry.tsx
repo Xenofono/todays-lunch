@@ -28,7 +28,7 @@ const RestaurantEntry = ({num, name, url, headerExtra, children}: RestaurantEntr
     return (
         <article
             className={cn(
-                "border-t border-border px-0.5 pt-4 pb-5 transition-all duration-300 hover:bg-wash",
+                "border-t-[3px] border-double border-border px-0.5 pt-4 pb-5 transition-all duration-300 hover:bg-wash",
                 isWinner && "bg-primary/10",
                 isLoser && "opacity-25"
             )}
