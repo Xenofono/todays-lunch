@@ -17,12 +17,25 @@ export class BigBen extends Restaurant {
     }
 
     protected async _getMenu(): Promise<DailyMenu> {
-        const html = await (await fetch(this._url, {
-            next: {
-                revalidate: 14400
-            }
-        })).text();
-        return this._parseMenu(html);
+        // Kvartersmenyn sits behind Cloudflare, which can answer requests from cloud
+        // hosts with a bot challenge instead of the page: look like a browser, and
+        // don't let the fetch cache hold on to a challenge page for hours
+        const res = await fetch(this._url, {
+            cache: "no-store",
+            headers: {
+                "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0 Safari/537.36",
+                "Accept": "text/html,application/xhtml+xml",
+                "Accept-Language": "sv-SE,sv;q=0.9,en;q=0.8",
+            },
+        });
+        const html = await res.text();
+        try {
+            return this._parseMenu(html);
+        } catch (error) {
+            // say what came back instead of the menu, e.g. "HTTP 403, 'Just a moment...'"
+            const title = cheerio.load(html)("title").text().trim().slice(0, 80);
+            throw new Error(`${error instanceof Error ? error.message : error} (HTTP ${res.status}, page title '${title}')`);
+        }
     }
 
     private _parseMenu(html: string): DailyMenu {
