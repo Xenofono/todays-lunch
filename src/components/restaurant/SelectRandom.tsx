@@ -6,6 +6,7 @@ import {useAtom} from "jotai";
 import {useEffect, useRef, useState} from "react";
 import {TypographyEditorial, TypographyHeadline, TypographyKicker} from "@/lib/typography/Typography";
 import {cn} from "@/lib/utils";
+import {Button} from "@/components/ui/button";
 
 const POOH_GIF = "https://media0.giphy.com/media/v1.Y2lkPTZjMDliOTUya2dxb2p1eTF0em1zbDBwa21zbXBrNGZxbWhwOHhxaWUwMWU2eGVydiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/DAUiUaCVfBTFe/200w.gif";
 
@@ -78,20 +79,9 @@ const SelectRandom = ({restaurantNames}: Props) => {
                 >
                     {display}
                 </span>
-                <button
-                    onClick={spin}
-                    disabled={spinning}
-                    className="cursor-pointer rounded-[2px] bg-foreground px-5 py-[13px] text-background transition-colors hover:bg-primary active:scale-[.96] disabled:cursor-default disabled:opacity-70"
-                >
-                    <TypographyKicker className="text-[12px] tracking-[.16em]">RANDOMIZE</TypographyKicker>
-                </button>
+                <Button variant="ink" size="lg" onClick={spin} disabled={spinning}>RANDOMIZE</Button>
                 {randomizedRestaurant && !spinning && (
-                    <button
-                        onClick={resetRandomizedRestaurant}
-                        className="cursor-pointer font-serif text-[14px] italic leading-none text-muted-foreground underline transition-colors hover:text-foreground"
-                    >
-                        undo
-                    </button>
+                    <Button variant="kicker" size="inline" onClick={resetRandomizedRestaurant}>UNDO</Button>
                 )}
             </div>
 

@@ -34,8 +34,8 @@ export function TypographyHeadline({ children, className, ...props }: Typography
 }
 
 /**
- * Tracked uppercase sans label — kickers, entry indices, day labels, stamps,
- * button captions. No default color so buttons/links can drive hover states.
+ * Tracked uppercase sans label — kickers, entry indices, day labels, stamps.
+ * Buttons carry the same look via the variants in components/ui/button.tsx.
  */
 export function TypographyKicker({ children, className, ...props }: TypographyProps) {
     return (

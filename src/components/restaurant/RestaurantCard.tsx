@@ -5,6 +5,7 @@ import {getMenuSnapshot} from "@/lib/restaurant/menu-cache";
 import RestaurantCardError from "@/components/restaurant/RestaurantCardError";
 import RestaurantCardSuccess from "./RestaurantCardSuccess";
 import RestaurantEntry from "@/components/restaurant/RestaurantEntry";
+import {Skeleton} from "@/components/ui/skeleton";
 
 
 interface RestaurantCardLoaderProps {
@@ -51,10 +52,10 @@ async function RestaurantCardLoader({name, num}: RestaurantCardLoaderProps) {
 function RestaurantEntrySkeleton({name, num}: { name: string, num: string }) {
     return (
         <RestaurantEntry num={num} name={name}>
-            <div className="mt-3 animate-pulse space-y-2.5">
-                <div className="h-3 w-full bg-hairline"/>
-                <div className="h-3 w-3/4 bg-hairline"/>
-                <div className="h-3 w-1/2 bg-hairline"/>
+            <div className="mt-3 space-y-2.5">
+                <Skeleton className="h-3 w-full"/>
+                <Skeleton className="h-3 w-3/4"/>
+                <Skeleton className="h-3 w-1/2"/>
             </div>
         </RestaurantEntry>
     );

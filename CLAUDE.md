@@ -32,6 +32,7 @@ Next.js 16.3 App Router app that scrapes Södermalm restaurant lunch menus serve
 - Follow the "Lunchbladet" design in `design/` and the tokens in `globals.css`. Radius 0, no shadows, hairline rules.
 - UI copy in English, newspaper voice; only the title "Lunchbladet" is Swedish.
 - Use the components in `src/lib/typography/Typography.tsx` for text, not inline font classes.
+- Buttons and button-styled links: `<Button variant="ink|outline|pill|kicker">` from `src/components/ui/button.tsx` (shadcn, restyled). Use `asChild` for `<a>`. Don't hand-style new buttons. Add shadcn components with `npx shadcn@latest add …`, then point their `cn` import at `@/lib/utils` and restyle to the design.
 
 ## Tooling gotchas
 

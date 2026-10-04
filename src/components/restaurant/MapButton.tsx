@@ -6,7 +6,8 @@ import {
     DialogHeaderRow,
     DialogTrigger,
 } from "@/components/ui/dialog";
-import {TypographyEditorial, TypographyKicker} from "@/lib/typography/Typography";
+import {TypographyEditorial} from "@/lib/typography/Typography";
+import {Button} from "@/components/ui/button";
 
 interface MapButtonProps {
     name: string;
@@ -59,13 +60,10 @@ export default function MapButton({ name, address, coordinates }: MapButtonProps
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <button className="ml-auto cursor-pointer bg-transparent py-0.5 whitespace-nowrap text-muted-foreground transition-colors hover:text-primary hover:underline">
-                    <TypographyKicker className="tracking-[.16em]">⌖ MAP</TypographyKicker>
-                </button>
+                <Button variant="kicker" size="inline" className="ml-auto">⌖ MAP</Button>
             </DialogTrigger>
             <DialogContent
                 className="w-[640px] max-w-[92vw] gap-0"
-                showCloseButton={false}
                 aria-describedby={undefined}
             >
                 <DialogHeaderRow title={`${name} — getting there`} className="mb-1"/>
@@ -84,22 +82,12 @@ export default function MapButton({ name, address, coordinates }: MapButtonProps
                     />
                 </div>
                 <div className="flex flex-wrap justify-center gap-3">
-                    <a
-                        href={getWalkingDirectionsUrl()}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="rounded-[2px] bg-foreground px-[18px] py-3 text-background transition-colors hover:bg-primary"
-                    >
-                        <TypographyKicker className="text-[11px] tracking-[.16em]">WALKING DIRECTIONS</TypographyKicker>
-                    </a>
-                    <a
-                        href={getDestinationUrl()}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="rounded-[2px] border border-foreground px-[18px] py-3 text-foreground transition-colors hover:bg-foreground hover:text-background"
-                    >
-                        <TypographyKicker className="text-[11px] tracking-[.16em]">OPEN DESTINATION</TypographyKicker>
-                    </a>
+                    <Button asChild variant="ink">
+                        <a href={getWalkingDirectionsUrl()} target="_blank" rel="noopener noreferrer">WALKING DIRECTIONS</a>
+                    </Button>
+                    <Button asChild variant="outline">
+                        <a href={getDestinationUrl()} target="_blank" rel="noopener noreferrer">OPEN DESTINATION</a>
+                    </Button>
                 </div>
                 <TypographyEditorial className="mt-2.5 text-center text-[12px]">
                     a walk from Östgötagatan 12

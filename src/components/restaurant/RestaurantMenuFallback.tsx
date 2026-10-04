@@ -2,7 +2,8 @@
 
 import Image from 'next/image'
 import {Dialog, DialogContent, DialogHeaderRow, DialogTrigger} from "@/components/ui/dialog";
-import {TypographyEditorial, TypographyKicker} from "@/lib/typography/Typography";
+import {TypographyEditorial} from "@/lib/typography/Typography";
+import {Button} from "@/components/ui/button";
 
 
 export function RestaurantMenuFallback(props: { name: string, totalDays: number, menus: string[], imgUrl: string | undefined }) {
@@ -26,13 +27,10 @@ export function RestaurantMenuFallback(props: { name: string, totalDays: number,
                     </TypographyEditorial>
                     <Dialog>
                         <DialogTrigger asChild>
-                            <button className="cursor-pointer border border-foreground bg-transparent px-3 py-2 whitespace-nowrap text-foreground transition-colors hover:bg-foreground hover:text-background">
-                                <TypographyKicker className="tracking-[.14em]">VIEW MENU IMAGE</TypographyKicker>
-                            </button>
+                            <Button variant="outline" size="sm">VIEW MENU IMAGE</Button>
                         </DialogTrigger>
                         <DialogContent
                             className="max-h-[98vh] w-[98vw] max-w-[98vw] gap-0 overflow-y-auto p-3 sm:w-fit sm:max-w-[95vw] sm:p-6"
-                            showCloseButton={false}
                             aria-describedby={undefined}
                         >
                             <DialogHeaderRow title={`${props.name} — the menu`} className="mb-3 px-1 sm:px-0"/>
