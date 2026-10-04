@@ -8,18 +8,13 @@ export class VillaValentina extends Restaurant {
         super(
             "Villa Valentina",
             "https://www.villavalentina.se/stockholm/veckans-lunch",
-            "https://cdn.prod.website-files.com/69de817fa43b7efc02084f7f/69df993bc99ea9e324857903_Varl%C4%B1k%202.svg",
             "Slussbrogatan 10, 116 45 Stockholm",
             { lat: 59.320128, lng: 18.071319 }
         );
     }
 
     protected async _getMenu(): Promise<DailyMenu> {
-        const html = await (await fetch(this._url, {
-            next: {
-                revalidate: 14400
-            }
-        })).text();
+        const html = await this.fetchText();
         return this._parseMenu(html);
     }
 

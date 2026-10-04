@@ -7,7 +7,6 @@ export class BlaDorren extends Restaurant {
         super(
             "Blå dörren",
             "https://bla-dorren.se/lunch",
-            "https://bla-dorren.se/lunch/placeholder",
             "Södermalmstorg 6, 116 45 Stockholm",
             { lat: 59.320152, lng: 18.070196 }
         );
@@ -15,11 +14,7 @@ export class BlaDorren extends Restaurant {
     }
 
     protected async _getMenu(): Promise<DailyMenu> {
-        const html = await (await fetch(this._url, {
-            next: {
-                revalidate: 14400
-            }
-        })).text();
+        const html = await this.fetchText();
         return this._parseMenu(html);
     }
 

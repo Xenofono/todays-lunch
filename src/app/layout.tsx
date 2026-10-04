@@ -2,9 +2,11 @@ import type { Metadata, Viewport } from "next";
 import { Archivo, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
+import { Suspense } from "react";
 import { Provider } from "jotai";
 import { ThemeProvider } from "next-themes";
 import { TypographyEditorial } from "@/lib/typography/Typography";
+import CurrentYear from "@/components/layout/CurrentYear";
 
 const archivo = Archivo({
   variable: "--font-archivo",
@@ -46,7 +48,7 @@ export default function RootLayout({
           <footer className="w-full border-t border-hairline py-6">
               <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-6 sm:flex-row sm:px-12">
                   <TypographyEditorial className="text-[13px]">
-                      © {new Date().getFullYear()} Kristoffer Näsström — printed daily at lunchtime
+                      © <Suspense><CurrentYear /></Suspense> Kristoffer Näsström — printed daily at lunchtime
                   </TypographyEditorial>
                   <Link
                       href="https://github.com/Xenofono/todays-lunch"

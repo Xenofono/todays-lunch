@@ -12,7 +12,6 @@ export class Bistroteket extends Restaurant {
         super(
             "Bistroteket",
             "https://www.bistroteket.se",
-            "https://www.bistroteket.se/placeholder",
             "Bondegatan 54, 116 33 Stockholm",
             { lat: 59.313533803531136, lng: 18.084612856319417}
         );
@@ -21,16 +20,12 @@ export class Bistroteket extends Restaurant {
 
     protected async _getMenu(): Promise<DailyMenu> {
         const pdfUrl = await this._lunchPdf();
-        const buf = await (await fetch(pdfUrl)).arrayBuffer();
-        return this._parseMenu(await Bistroteket._pdfRows(Buffer.from(buf)));
+        const buf = await this.fetchBuffer(pdfUrl);
+        return this._parseMenu(await Bistroteket._pdfRows(buf));
     }
 
     private async _lunchPdf(): Promise<string> {
-        const html = await (await fetch(this._url, {
-            next: {
-                revalidate: 14400
-            }
-        })).text();
+        const html = await this.fetchText();
         const $ = cheerio.load(html);
         const href = $('a:contains("Lunch")').first().attr("href");
         if (!href) throw new Error("No PDF link found");

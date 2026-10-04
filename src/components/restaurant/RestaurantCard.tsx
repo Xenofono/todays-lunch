@@ -1,54 +1,51 @@
 import {Suspense} from 'react';
+import {connection} from "next/server";
 import {Restaurant} from '@/lib/restaurant/restaurant';
+import {getMenuSnapshot} from "@/lib/restaurant/menu-cache";
 import RestaurantCardError from "@/components/restaurant/RestaurantCardError";
 import RestaurantCardSuccess from "./RestaurantCardSuccess";
 import RestaurantEntry from "@/components/restaurant/RestaurantEntry";
 
 
 interface RestaurantCardLoaderProps {
-    restaurant: Restaurant;
+    name: string;
     num: string;
 }
 
-async function RestaurantCardLoader({restaurant, num}: RestaurantCardLoaderProps) {
+async function RestaurantCardLoader({name, num}: RestaurantCardLoaderProps) {
+    const snapshot = await getMenuSnapshot(name);
 
-    await restaurant.update();
-
-
-    const dailyMenu = (restaurant.menu ?? {}) as Record<string, string[]>;
-    const totalDays = Object.keys(restaurant.menu).length;
-    const totalItems = Object.values(restaurant.menu).flat().length;
-    const didError = restaurant.didError
-
-    const props = {
-        num,
-        name: restaurant.name,
-        url: restaurant.url,
-        additionalInformation: restaurant.additionalInformation,
-        menuToday: restaurant.menuToday ?? [],
-        weeklyMenu: restaurant.weeklyMenu,
-        totalDays,
-        totalItems,
-        menuImgUrl: restaurant.menuImgUrl,
-        dailyMenu,
-        address: restaurant.address,
-        coordinates: restaurant.coordinates,
-    } satisfies React.ComponentProps<typeof RestaurantCardSuccess>;
-
-
-    return !didError
-        ? (
-            <RestaurantCardSuccess {...props} />
-        )
-        : (
+    if (snapshot.error) {
+        return (
             <RestaurantCardError
                 num={num}
-                name={restaurant.name}
-                url={restaurant.url}
-                didErrorMessage={didError}
+                name={snapshot.name}
+                url={snapshot.url}
+                didErrorMessage={snapshot.error}
             />
-        )
+        );
+    }
 
+    // the menu is cached; which day is "today" is decided per request
+    await connection();
+    const menuToday = snapshot.menu[Restaurant.todayEn()] ?? [];
+
+    return (
+        <RestaurantCardSuccess
+            num={num}
+            name={snapshot.name}
+            url={snapshot.url}
+            additionalInformation={snapshot.additionalInformation}
+            menuToday={menuToday}
+            weeklyMenu={snapshot.weeklyMenu}
+            totalDays={Object.keys(snapshot.menu).length}
+            totalItems={Object.values(snapshot.menu).flat().length}
+            menuImgUrl={snapshot.menuImgUrl}
+            dailyMenu={snapshot.menu}
+            address={snapshot.address}
+            coordinates={snapshot.coordinates}
+        />
+    );
 }
 
 function RestaurantEntrySkeleton({name, num}: { name: string, num: string }) {
@@ -63,11 +60,11 @@ function RestaurantEntrySkeleton({name, num}: { name: string, num: string }) {
     );
 }
 
-export default function RestaurantCard({restaurant, index}: { restaurant: Restaurant, index: number }) {
+export default function RestaurantCard({name, index}: { name: string, index: number }) {
     const num = String(index).padStart(2, "0");
     return (
-        <Suspense fallback={<RestaurantEntrySkeleton name={restaurant.name} num={num}/>}>
-            <RestaurantCardLoader restaurant={restaurant} num={num}/>
+        <Suspense fallback={<RestaurantEntrySkeleton name={name} num={num}/>}>
+            <RestaurantCardLoader name={name} num={num}/>
         </Suspense>
     );
 }

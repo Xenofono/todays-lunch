@@ -1,40 +1,25 @@
+import { Suspense } from "react";
+import { connection } from "next/server";
 import RestaurantGrid from "@/components/restaurant/RestaurantGrid";
 import Masthead from "@/components/layout/Masthead";
-import { OliverTwist } from "@/lib/restaurant/oliver-twist";
-import { Kvarnen } from "@/lib/restaurant/kvarnen";
-import { BastardBurgers } from "@/lib/restaurant/bastard-burgers";
-import { DeliDiLuca } from "@/lib/restaurant/deli-di-luca";
-import { BiblioteketLive } from "@/lib/restaurant/biblioteket-live";
-import { Bistroteket } from "@/lib/restaurant/bistroteket";
-import { BlaDorren } from "@/lib/restaurant/bla-dorren";
-import { Usine } from "@/lib/restaurant/usine";
-import { Florentine } from "@/lib/restaurant/florentine";
-import { Invece } from "@/lib/restaurant/invece";
-import { VillaValentina } from "@/lib/restaurant/villa-valentina";
-import { UrbanDeli } from "@/lib/restaurant/urban-deli";
-import { BigBen } from "@/lib/restaurant/big-ben";
+import { restaurantNames } from "@/lib/restaurant/registry";
 import { shuffle } from "@/lib/utils";
 
-export const dynamic = 'force-dynamic';
+// today's date (masthead) and the shuffled column order are per request;
+// the menus themselves are cached per restaurant (see menu-cache.ts)
+async function Edition() {
+    await connection();
+    return (
+        <>
+            <Masthead />
+            <main className="relative">
+                <RestaurantGrid restaurantNames={shuffle(restaurantNames())} />
+            </main>
+        </>
+    );
+}
 
-export default async function Home() {
-
-    const restaurants = shuffle([
-        new OliverTwist(),
-        new Kvarnen(),
-        new BastardBurgers(),
-        new DeliDiLuca(),
-        new BiblioteketLive(),
-        new Bistroteket(),
-        new BlaDorren(),
-        new Usine(),
-        new Florentine(),
-        new Invece(),
-        new VillaValentina(),
-        new UrbanDeli(),
-        new BigBen()
-    ]);
-
+export default function Home() {
     return (
         <div className="relative min-h-screen overflow-hidden">
             {/* ambient blob */}
@@ -51,11 +36,9 @@ export default async function Home() {
                 *
             </div>
 
-            <Masthead />
-
-            <main className="relative">
-                <RestaurantGrid restaurants={restaurants} />
-            </main>
+            <Suspense>
+                <Edition />
+            </Suspense>
         </div>
     );
 }

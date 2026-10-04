@@ -6,50 +6,58 @@ type VALID_EN_DAYS = typeof Restaurant.WEEKDAYS_EN[number]
 export abstract class Restaurant {
     static readonly WEEKDAYS_EN = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"] as const;
     static readonly WEEKDAYS_SE = ["måndag", "tisdag", "onsdag", "torsdag", "fredag", "lördag", "söndag"] as const;
-    static readonly MENU_TIME = 3600000; // 1 hour in milliseconds
     static _debugDay: string | undefined = undefined; // override day name for testing
+
+    // look like a browser: some sites serve bot checks or trimmed pages to unknown clients
+    private static readonly FETCH_HEADERS = {
+        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0 Safari/537.36",
+        "Accept-Language": "sv-SE,sv;q=0.9,en;q=0.8",
+    };
 
     private _currentMenu: DailyMenu = {};
     // dishes served every weekday (veckans lunch / weekly specials), kept apart from the per-day menu
     protected _weeklyMenu: string[] = [];
-    private _menuFrom: number = -Restaurant.MENU_TIME;
     private _name: string;
     protected _url: string;
-    private _imageUrl: string;
-    private _updating: boolean = false;
     private _didError: string | undefined = undefined
     protected _additionalInformation: string | undefined = undefined;
     protected _menuImgUrl: string | undefined = undefined;
     private _address: string | undefined = undefined;
     private _coordinates: { lat: number; lng: number } | undefined = undefined;
 
-    constructor(name: string, url: string, imageUrl: string = "", address?: string, coordinates?: { lat: number; lng: number }) {
+    constructor(name: string, url: string, address?: string, coordinates?: { lat: number; lng: number }) {
         this._name = name;
         this._url = url;
-        this._imageUrl = imageUrl;
         this._address = address;
         this._coordinates = coordinates;
     }
 
+    /** Scrapes the menu. Caching is done by the caller (see menu-cache.ts), not here. */
     async update(): Promise<void> {
-        if (this._updating) return;
-
         try {
-            const currentTime = Date.now();
-            if (currentTime > (this._menuFrom + Restaurant.MENU_TIME)) {
-                console.log(`Updating restaurant menu: ${this._name}`);
-                this._updating = true;
-                this._currentMenu = await this._getMenu();
-                this._menuFrom = currentTime;
-            }
+            console.log(`Updating restaurant menu: ${this._name}`);
+            this._currentMenu = await this._getMenu();
         } catch (error) {
-            console.error(`ERROR: Failed to update restaurant menu (${this._name}):`, error instanceof Error ? error.message : 'Unknown error');
-            this._didError = `ERROR: Failed to update restaurant menu (${this._name}): ${error instanceof Error ? error.message : 'Unknown error'}`
-        } finally {
-            this._updating = false;
+            const message = `ERROR: Failed to update restaurant menu (${this._name}): ${error instanceof Error ? error.message : 'Unknown error'}`;
+            console.error(message);
+            this._didError = message;
         }
     }
-    
+
+    private async _fetch(url: string): Promise<Response> {
+        const res = await fetch(url, { headers: Restaurant.FETCH_HEADERS });
+        if (!res.ok) throw new Error(`HTTP ${res.status} fetching ${url}`);
+        return res;
+    }
+
+    protected async fetchText(url: string = this._url): Promise<string> {
+        return (await this._fetch(url)).text();
+    }
+
+    protected async fetchBuffer(url: string): Promise<Buffer> {
+        return Buffer.from(await (await this._fetch(url)).arrayBuffer());
+    }
+
     get didError(): string | undefined {
         return this._didError
     }
@@ -80,10 +88,6 @@ export abstract class Restaurant {
 
     get url(): string {
         return this._url;
-    }
-
-    get imageUrl(): string {
-        return this._imageUrl;
     }
 
     get address(): string | undefined {

@@ -2,6 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
     serverExternalPackages: ['pdf-parse'],
+    // enables `use cache`; scraped menus are cached per restaurant in menu-cache.ts
+    cacheComponents: true,
     typescript: {
         // `npm run build` type-checks with TypeScript 7 (`tsc`) before `next build`.
         // Next would otherwise re-check with the `typescript` package, which is
