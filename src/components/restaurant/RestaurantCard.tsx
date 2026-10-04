@@ -26,6 +26,7 @@ async function RestaurantCardLoader({restaurant, num}: RestaurantCardLoaderProps
         url: restaurant.url,
         additionalInformation: restaurant.additionalInformation,
         menuToday: restaurant.menuToday ?? [],
+        weeklyMenu: restaurant.weeklyMenu,
         totalDays,
         totalItems,
         menuImgUrl: restaurant.menuImgUrl,

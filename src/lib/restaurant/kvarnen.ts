@@ -1,76 +1,66 @@
 import * as cheerio from "cheerio";
-import pdf from "pdf-parse";
 import { Restaurant } from "./restaurant";
 import { DailyMenu } from "../types";
+import { formatDish } from "../dish";
 
 export class Kvarnen extends Restaurant {
     constructor() {
         super(
             "Kvarnen",
-            "https://www.kvarnen.com/mat-dryck/",
-            "https://www.kvarnen.com/wp-content/uploads/2017/01/kvarnen_3.jpg",
+            "https://www.kvarnen.com/sv/lunch",
+            "https://www.kvarnen.com/images/kvarnen/logo.svg",
             "Tjärhovsgatan 4, 116 21 Stockholm",
             { lat: 59.314846, lng: 18.0742 }
         );
     }
 
-
     protected async _getMenu(): Promise<DailyMenu> {
-        const pdfUrl = await this._firstPdf();
-        const buf = await (await fetch(pdfUrl)).arrayBuffer();
-        const text = (await pdf(Buffer.from(buf))).text;
-        return this._parseMenu(text);
-    }
-
-    private async _firstPdf(): Promise<string> {
         const html = await (await fetch(this._url, {
             next: {
                 revalidate: 3600
             }
         })).text();
-        const $ = cheerio.load(html);
-        const lunchContainer = $('.todays-lunch').parent()
-        const href = $(lunchContainer).find("a[href*=\".pdf\"]").first().attr("href");
-        if (!href) throw new Error("No PDF link found");
-        this._url = href;
-        return href.startsWith("http") ? href : new URL(href, this._url).href;
+        return this._parseMenu(html);
     }
 
-    private _parseMenu(raw: string): DailyMenu {
+    private _parseMenu(html: string): DailyMenu {
+        const $ = cheerio.load(html);
         const menu: DailyMenu = {};
 
-        // work on trimmed non-empty lines
-        const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-        const startIndex = lines.findIndex(x => x.toLowerCase() == "måndag")
-        const endIndex = lines.findIndex(x => x.toLowerCase() == "fredag")
-        const linesToWorkWith = lines.slice(startIndex, endIndex+2)
-        
-        const priceLine = lines.find(x => x.toLowerCase().includes(":-"))
-        
-        if (priceLine) this._additionalInformation = priceLine;
+        // each menu category is a .meny-section with a title, e.g. "Dagens lunch", "Veckans fisk"
+        const section = (title: string) => $(".meny-section").filter(
+            (_, el) => $(el).find(".meny-section-title").text().trim().toLowerCase() === title
+        ).first();
 
+        const rows = (el: ReturnType<typeof section>) => el.find(".meny-row").toArray().map(row => ({
+            name: $(row).find(".meny-name").text().trim(),
+            desc: $(row).find(".meny-desc").text().trim(),
+            price: $(row).find(".meny-pris").text().trim(),
+        }));
+
+        const daily = section("dagens lunch");
+        if (daily.length === 0) throw new Error("No 'Dagens lunch' section found");
+
+        // e.g. "Serveras måndag till fredag kl. 11–15. Ingår: sallad, bröd, smör, kaffe/te och liten kaka."
+        const info = daily.find(".meny-sub").text().trim();
+        if (info) this._additionalInformation = info;
+
+        // rows are named after the weekday; a non-day row (e.g. "Varm punsch" after
+        // Thursday's pea soup) is an add-on to the day above it
         let currentDay: string | null = null;
-        for (let i = 0; i < linesToWorkWith.length; i++) {
-            
-            const line = linesToWorkWith[i];
-            
-            if(Restaurant.isValidSeDay(line.toLowerCase()))
-            {
-                currentDay = line;
-            }
-            else
-            {
-                const dayEn = Restaurant.daySvToEn(currentDay!);
-                
-                if (menu?.[dayEn]) menu[dayEn].push(line)
-                else menu[dayEn] = [line];
-                
-                
-            }
-            //console.log(i, line)
-        }
-        
+        for (const { name, desc, price } of rows(daily)) {
+            const dayEn = Restaurant.isValidSeDay(name.toLowerCase()) ? Restaurant.daySvToEn(name.toLowerCase()) : null;
+            if (dayEn) currentDay = dayEn;
+            if (!currentDay) continue;
 
+            const dish = dayEn ? { text: desc, price } : { name, text: desc, price };
+            if (!dish.name && !dish.text) continue;
+            (menu[currentDay] ??= []).push(formatDish(dish));
+        }
+
+        this._weeklyMenu = rows(section("veckans fisk"))
+            .filter(r => r.name)
+            .map(r => formatDish({ label: "VECKANS FISK", name: r.name, text: r.desc, price: r.price }));
 
         return menu;
     }

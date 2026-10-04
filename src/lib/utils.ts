@@ -18,3 +18,8 @@ export function shuffle<T>(arr: T[]): T[] {
     return a;
 }
 
+
+/** Collapses runs of whitespace (incl. &nbsp; and PDF line noise) to single spaces. */
+export function normalizeWhitespace(text: string): string {
+    return text.replace(/\s+/g, " ").trim();
+}

@@ -4,10 +4,11 @@ import {useAtomValue} from "jotai";
 import {searchAtom} from "@/store/search";
 import MapButton from "@/components/restaurant/MapButton";
 import RestaurantEntry from "@/components/restaurant/RestaurantEntry";
+import DishList from "@/components/restaurant/DishList";
 import RestaurantFullMenu from "@/components/restaurant/RestaurantFullMenu";
 import {RestaurantMenuFallback} from "@/components/restaurant/RestaurantMenuFallback";
-import {TypographyBody, TypographyEditorial} from "@/lib/typography/Typography";
-import {cn, isMatch} from "@/lib/utils";
+import {TypographyEditorial} from "@/lib/typography/Typography";
+import {isMatch} from "@/lib/utils";
 
 type RestaurantCardSuccessProps = {
     num: string
@@ -15,6 +16,7 @@ type RestaurantCardSuccessProps = {
     url: string
     additionalInformation: string | undefined
     menuToday: string[]
+    weeklyMenu: string[]
     totalDays: number
     totalItems: number
     menuImgUrl: string | undefined
@@ -34,6 +36,7 @@ const RestaurantCardSuccess = ({
                                    url,
                                    additionalInformation,
                                    menuToday,
+                                   weeklyMenu,
                                    totalDays,
                                    totalItems,
                                    menuImgUrl,
@@ -45,9 +48,9 @@ const RestaurantCardSuccess = ({
 
     if (q) {
         const nameMatch = isMatch(name, q);
-        const todayMatch = menuToday.some((item) => isMatch(item, q));
-        const weeklyMatch = Object.values(dailyMenu ?? {}).flat().some((item) => isMatch(item, q));
-        if (!(nameMatch || todayMatch || weeklyMatch)) return null;
+        const match = (item: string) => isMatch(item, q);
+        const menuMatch = Object.values(dailyMenu ?? {}).some((items) => items.some(match)) || weeklyMenu.some(match);
+        if (!(nameMatch || menuMatch)) return null;
     }
 
     return (
@@ -63,16 +66,17 @@ const RestaurantCardSuccess = ({
                 </TypographyEditorial>
             )}
 
-            {menuToday.length > 0 && (
-                <div className="mt-1 flex flex-col gap-[5px]">
-                    {menuToday.map((item, index) => (
-                        <TypographyBody
-                            key={index}
-                            className={cn(isMatch(item, q) && "text-primary underline underline-offset-[3px]")}
-                        >
-                            — {item}
-                        </TypographyBody>
-                    ))}
+            {(menuToday.length > 0 || weeklyMenu.length > 0) && (
+                <div className="mt-1 flex flex-col gap-3.5">
+                    {menuToday.length > 0 && (
+                        <DishList items={menuToday} heading={weeklyMenu.length > 0 ? "Today" : undefined}/>
+                    )}
+                    {weeklyMenu.length > 0 && (
+                        <DishList
+                            items={weeklyMenu}
+                            heading={totalDays > 0 ? "All week" : "Weekly menu — same all week, Mon–Fri"}
+                        />
+                    )}
                 </div>
             )}
 
@@ -80,7 +84,7 @@ const RestaurantCardSuccess = ({
                 <RestaurantFullMenu menu={dailyMenu} totalItems={totalItems} totalDays={totalDays}/>
             )}
 
-            <RestaurantMenuFallback name={name} totalDays={totalDays} menus={menuToday} imgUrl={menuImgUrl}/>
+            <RestaurantMenuFallback name={name} totalDays={totalDays} menus={[...menuToday, ...weeklyMenu]} imgUrl={menuImgUrl}/>
         </RestaurantEntry>
     );
 }

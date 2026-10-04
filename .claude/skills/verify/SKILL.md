@@ -5,12 +5,12 @@ description: Build, run and visually verify the todays-lunch Next.js app
 
 # Verifying todays-lunch
 
-Next.js 16 app, home page is `force-dynamic` and scrapes 10 real restaurant sites server-side (cards stream in via Suspense, allow ~5s for full HTML).
+Next.js 16 app, home page is `force-dynamic` and scrapes 13 real restaurant sites server-side (cards stream in via Suspense, allow ~5s for full HTML).
 
 ## Build & run
 
 ```bash
-npm run build            # turbopack, ~30s incl. typecheck
+npm run build            # TS 7 typecheck (`npm run typecheck`), then turbopack build
 npm start                # production server on :3000
 ```
 
