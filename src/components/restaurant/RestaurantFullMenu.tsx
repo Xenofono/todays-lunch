@@ -3,10 +3,11 @@
 import {DailyMenu} from "@/lib/types";
 import {useAtomValue} from "jotai";
 import {searchAtom} from "@/store/search";
-import {useId, useState} from "react";
-import {TypographyKicker} from "@/lib/typography/Typography";
+import {useState} from "react";
 import {isMatch} from "@/lib/utils";
 import DishList from "@/components/restaurant/DishList";
+import {Button} from "@/components/ui/button";
+import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/ui/collapsible";
 
 type props = {
     menu: DailyMenu
@@ -16,7 +17,6 @@ type props = {
 
 const RestaurantFullMenu = ({menu, totalDays, totalItems}: props) => {
     const q = useAtomValue(searchAtom);
-    const panelId = useId();
     const [manualOpen, setManualOpen] = useState<boolean | null>(null);
     const [prevQ, setPrevQ] = useState(q);
 
@@ -30,27 +30,20 @@ const RestaurantFullMenu = ({menu, totalDays, totalItems}: props) => {
     const open = manualOpen ?? weeklyMatch;
 
     return (
-        <div>
-            <button
-                onClick={() => setManualOpen(!open)}
-                aria-expanded={open}
-                aria-controls={panelId}
-                className="mt-3 flex cursor-pointer items-center gap-2 bg-transparent p-0 text-muted-foreground transition-colors hover:text-primary"
-            >
-                <TypographyKicker>
+        <Collapsible open={open} onOpenChange={setManualOpen}>
+            <CollapsibleTrigger asChild>
+                <Button variant="kicker" size="inline" className="mt-1.5">
                     FULL WEEK — {totalDays} DAYS · {totalItems} DISHES
-                </TypographyKicker>
-                <span aria-hidden className="text-[8px]">{open ? "▲" : "▼"}</span>
-            </button>
+                    <span aria-hidden className="text-[8px]">{open ? "▲" : "▼"}</span>
+                </Button>
+            </CollapsibleTrigger>
 
-            {open && (
-                <div id={panelId} className="mt-2.5 flex flex-col gap-2.5 border-l-2 border-hairline pl-3">
-                    {Object.entries(menu).map(([day, items]) => (
-                        <DishList key={day} items={items} heading={day} textClassName="text-[13px]"/>
-                    ))}
-                </div>
-            )}
-        </div>
+            <CollapsibleContent className="mt-2.5 flex flex-col gap-2.5 border-l-2 border-hairline pl-3">
+                {Object.entries(menu).map(([day, items]) => (
+                    <DishList key={day} items={items} heading={day} textClassName="text-[13px]"/>
+                ))}
+            </CollapsibleContent>
+        </Collapsible>
     );
 }
 

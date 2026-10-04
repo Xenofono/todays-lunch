@@ -2,7 +2,7 @@
 
 import { useTheme } from "next-themes";
 import { useSyncExternalStore } from "react";
-import { TypographyKicker } from "@/lib/typography/Typography";
+import {Button} from "@/components/ui/button";
 
 const emptySubscribe = () => () => {};
 
@@ -14,13 +14,8 @@ export default function ThemeToggle() {
     const isDark = !mounted || resolvedTheme === "dark";
 
     return (
-        <button
-            onClick={() => setTheme(isDark ? "light" : "dark")}
-            className="cursor-pointer rounded-full border border-border bg-transparent px-3.5 py-[7px] text-foreground transition-colors hover:bg-foreground hover:text-background"
-        >
-            <TypographyKicker className="text-[11px] font-semibold tracking-[.1em]">
-                {isDark ? "EVENING EDITION" : "DAY EDITION"}
-            </TypographyKicker>
-        </button>
+        <Button variant="pill" size="sm" onClick={() => setTheme(isDark ? "light" : "dark")}>
+            {isDark ? "EVENING EDITION" : "DAY EDITION"}
+        </Button>
     );
 }

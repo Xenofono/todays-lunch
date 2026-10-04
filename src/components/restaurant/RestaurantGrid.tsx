@@ -15,10 +15,16 @@ export default function RestaurantGrid({ restaurantNames }: RestaurantGridProps)
                 <SelectRandom restaurantNames={restaurantNames} />
             </div>
 
-            <div className="grid items-start gap-x-9 gap-y-8 px-6 pt-5 pb-11 sm:px-12 md:grid-cols-2 md:gap-y-0 xl:grid-cols-3">
-                {restaurantNames.map((name, index) => (
-                    <RestaurantCard key={name} name={name} index={index + 1} />
-                ))}
+            <div className="px-6 pt-5 pb-11 sm:px-12">
+                <div className="relative grid items-start gap-x-9 gap-y-8 md:grid-cols-2 md:gap-y-0 xl:grid-cols-3">
+                    {/* hairline column rules, centred in the 36px gutters (2 columns at md, 3 at xl) */}
+                    <div className="absolute inset-y-0 hidden w-px bg-hairline md:block md:left-1/2 xl:left-[calc(100%/3-6px)]"/>
+                    <div className="absolute inset-y-0 left-[calc(200%/3+6px)] hidden w-px bg-hairline xl:block"/>
+
+                    {restaurantNames.map((name, index) => (
+                        <RestaurantCard key={name} name={name} index={index + 1} />
+                    ))}
+                </div>
             </div>
         </div>
     );

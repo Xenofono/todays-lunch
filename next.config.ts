@@ -10,6 +10,10 @@ const nextConfig: NextConfig = {
         // TypeScript 6 here so typescript-eslint keeps working.
         ignoreBuildErrors: true,
     },
+    experimental: {
+        // radix-ui re-exports ~30 packages; import only the ones used (not in Next's default list)
+        optimizePackageImports: ['radix-ui'],
+    },
     images:{
         remotePatterns: [
             new URL("https://gastrogate.com/files/**"),
