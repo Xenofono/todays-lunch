@@ -10,6 +10,8 @@ export abstract class Restaurant {
     static _debugDay: string | undefined = undefined; // override day name for testing
 
     private _currentMenu: DailyMenu = {};
+    // dishes served every weekday (veckans lunch / weekly specials), kept apart from the per-day menu
+    protected _weeklyMenu: string[] = [];
     private _menuFrom: number = -Restaurant.MENU_TIME;
     private _name: string;
     protected _url: string;
@@ -56,6 +58,10 @@ export abstract class Restaurant {
         return this._currentMenu;
     }
     
+    get weeklyMenu(): string[] {
+        return this._weeklyMenu;
+    }
+
     get additionalInformation(): string | undefined {
         return this._additionalInformation;
     }
@@ -153,4 +159,4 @@ export abstract class Restaurant {
     static isValidEnDay(day: string): day is VALID_EN_DAYS {
         return (Restaurant.WEEKDAYS_EN as readonly string[]).includes(day);
     }
-}
+}

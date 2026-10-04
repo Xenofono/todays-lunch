@@ -1,6 +1,7 @@
 import * as cheerio from "cheerio";
 import { Restaurant } from "./restaurant";
 import { DailyMenu } from "../types";
+import { formatDish } from "../dish";
 
 export class Florentine extends Restaurant {
     constructor() {
@@ -24,32 +25,24 @@ export class Florentine extends Restaurant {
 
     private _parseMenu(html: string): DailyMenu {
         const $ = cheerio.load(html);
-        const menu: DailyMenu = {};
 
         // Extract additional information (lunch hours)
         const lunchInfo = $(".paragraph-tier-1.weekly-menu-main-para").text().trim();
         this._additionalInformation = lunchInfo;
 
-        // Extract all menu items
-        const menuItems: string[] = [];
-        $(".weekly-menu-items-wrapper").each((_, element) => {
-            const menuName = $(element).find(".menu-name").text().trim().toUpperCase();
-            const itemName = $(element).find(".menu-item-name").text().trim();
-            const description = $(element).find(".menu-item-description").text().trim();
-            const price = $(element).find(".menu-item-price").text().trim();
+        const menuItems = $(".weekly-menu-items-wrapper").toArray()
+            .map(el => ({
+                label: $(el).find(".menu-name").text(),
+                name: $(el).find(".menu-item-name").text(),
+                text: $(el).find(".menu-item-description").text(),
+                price: $(el).find(".menu-item-price").text(),
+            }))
+            .filter(d => d.name.trim())
+            .map(formatDish);
 
-            if (itemName) {
-                menuItems.push(`${menuName}: ${itemName} - ${description} (${price})`);
-            }
-        });
+        // Florentine serves one menu all week (Monday-Friday), not a daily one
+        this._weeklyMenu = menuItems;
 
-        // Florentine has the same menu all week (Monday-Friday)
-        // Populate all weekdays with the same menu
-        const weekdays = ["monday", "tuesday", "wednesday", "thursday", "friday"];
-        weekdays.forEach(day => {
-            menu[day] = [...menuItems];
-        });
-
-        return menu;
+        return {};
     }
 }

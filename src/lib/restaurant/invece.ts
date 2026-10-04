@@ -2,6 +2,8 @@ import * as cheerio from "cheerio";
 import pdf from "pdf-parse";
 import { Restaurant } from "./restaurant";
 import { DailyMenu } from "../types";
+import { formatDish } from "../dish";
+import { normalizeWhitespace } from "../utils";
 
 export class Invece extends Restaurant {
     constructor() {
@@ -36,33 +38,67 @@ export class Invece extends Restaurant {
 
     private _parseMenu(raw: string): DailyMenu {
         const menu: DailyMenu = {};
-        const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+        const lines = raw.split(/\r?\n/).map(normalizeWhitespace).filter(Boolean);
         const startIndex = lines.findIndex(x => x.toLowerCase() === "måndag");
-        const endIndex = lines.findIndex(x => x.includes("PASTA DEL GIORNO"));
-        const linesToWorkWith = lines.slice(startIndex, endIndex);
+        const endIndex = lines.findIndex(x => x.toUpperCase().startsWith("PASTA DEL GIORNO"));
+        if (startIndex < 0) throw new Error("No 'MÅNDAG' found in lunch PDF");
+        const linesToWorkWith = lines.slice(startIndex, endIndex < 0 ? undefined : endIndex);
 
-        const priceLine = lines.find(x => x.includes("VECKANS LUNCH"));
-        if (priceLine) this._additionalInformation = priceLine;
-
-        let currentDay: string | null = null;
-
-        for (let i = 0; i < linesToWorkWith.length; i++) {
-            const line = linesToWorkWith[i];
-
-            if (Restaurant.isValidSeDay(line.toLowerCase())) {
-                currentDay = Restaurant.daySvToEn(line.toLowerCase());
-            } else if (line !== "____________________________________________") {
-                if (currentDay) {
-                    if (!menu?.[currentDay]) menu[currentDay] = [];
-                    
-                    if (menu[currentDay].length > 0 && (/^[a-zåäö]/.test(line) || line.startsWith("Med ") || line.startsWith("Alternativt "))) {
-                        menu[currentDay][menu[currentDay].length - 1] += ` ${line}`;
-                    } else {
-                        menu[currentDay].push(line);
-                    }
-                }
-            }
+        // "VECKANS LUNCH 155: -" -> "Veckans lunch 155 kr"
+        const priceLine = lines.find(x => x.toUpperCase().startsWith("VECKANS LUNCH"));
+        if (priceLine) {
+            const price = /\d+/.exec(priceLine)?.[0];
+            this._additionalInformation = `Veckans lunch${price ? ` ${price} kr` : ""}`;
         }
+
+        // A dish is wrapped over several PDF lines and ends with a full stop, e.g.
+        //   "Köttfärslimpa" / "Potatispuré, gräddsås & svartvinbärsgelé."
+        // so keep joining lines until one ends with "." (or the day/section ends).
+        let target: string[] | null = null;
+        // set by a "VECKANS FISK 155:-" section header, cleared by a day header
+        let label: string | undefined;
+        let price: string | undefined;
+        let pending: string | null = null;
+        const weekly: string[] = [];
+
+        const flush = () => {
+            if (pending && target) target.push(formatDish({label, text: pending, price}));
+            pending = null;
+        };
+
+        for (const line of linesToWorkWith) {
+            if (/^_+$/.test(line)) { flush(); continue; }
+
+            const day = line.toLowerCase();
+            if (Restaurant.isValidSeDay(day)) {
+                flush();
+                target = (menu[Restaurant.daySvToEn(day)] ??= []);
+                label = price = undefined;
+                continue;
+            }
+
+            // "VECKANS FISK 155:-" — a weekly dish, served alongside the daily ones
+            const section = /^(VECKANS [A-ZÅÄÖ]+)\s*(\d+)?/.exec(line);
+            if (section) {
+                flush();
+                target = weekly;
+                [, label, price] = section;
+                continue;
+            }
+
+            if (!target) continue;
+            if (pending === null) {
+                pending = line;
+            } else {
+                // "Köttfärslimpa" + "Potatispuré, ..." -> name, then description
+                const continues = /[,&]$|\b(med|och|på|i)$/i.test(pending) || /^[a-zåäö]/.test(line);
+                pending += continues ? ` ${line}` : ` - ${line}`;
+            }
+            if (pending.endsWith(".")) flush();
+        }
+        flush();
+
+        this._weeklyMenu = weekly;
 
         return menu;
     }

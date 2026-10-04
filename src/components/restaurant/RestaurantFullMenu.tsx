@@ -4,8 +4,9 @@ import {DailyMenu} from "@/lib/types";
 import {useAtomValue} from "jotai";
 import {searchAtom} from "@/store/search";
 import {useId, useState} from "react";
-import {TypographyBody, TypographyKicker} from "@/lib/typography/Typography";
-import {cn, isMatch} from "@/lib/utils";
+import {TypographyKicker} from "@/lib/typography/Typography";
+import {isMatch} from "@/lib/utils";
+import DishList from "@/components/restaurant/DishList";
 
 type props = {
     menu: DailyMenu
@@ -45,24 +46,7 @@ const RestaurantFullMenu = ({menu, totalDays, totalItems}: props) => {
             {open && (
                 <div id={panelId} className="mt-2.5 flex flex-col gap-2.5 border-l-2 border-hairline pl-3">
                     {Object.entries(menu).map(([day, items]) => (
-                        <div key={day}>
-                            <TypographyKicker className="mb-1 block text-[10.5px] text-primary uppercase">
-                                {day}
-                            </TypographyKicker>
-                            <div className="flex flex-col gap-[3px]">
-                                {items.map((item, index) => (
-                                    <TypographyBody
-                                        key={index}
-                                        className={cn(
-                                            "text-[13px]",
-                                            isMatch(item, q) && "text-primary underline underline-offset-[3px]"
-                                        )}
-                                    >
-                                        {item}
-                                    </TypographyBody>
-                                ))}
-                            </div>
-                        </div>
+                        <DishList key={day} items={items} heading={day} textClassName="text-[13px]"/>
                     ))}
                 </div>
             )}

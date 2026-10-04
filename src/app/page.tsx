@@ -10,6 +10,9 @@ import { BlaDorren } from "@/lib/restaurant/bla-dorren";
 import { Usine } from "@/lib/restaurant/usine";
 import { Florentine } from "@/lib/restaurant/florentine";
 import { Invece } from "@/lib/restaurant/invece";
+import { VillaValentina } from "@/lib/restaurant/villa-valentina";
+import { UrbanDeli } from "@/lib/restaurant/urban-deli";
+import { BigBen } from "@/lib/restaurant/big-ben";
 import { shuffle } from "@/lib/utils";
 
 export const dynamic = 'force-dynamic';
@@ -26,7 +29,10 @@ export default async function Home() {
         new BlaDorren(),
         new Usine(),
         new Florentine(),
-        new Invece()
+        new Invece(),
+        new VillaValentina(),
+        new UrbanDeli(),
+        new BigBen()
     ]);
 
     return (
