@@ -1,0 +1,8 @@
+# Store and check out text files with LF everywhere, regardless of a
+# contributor's core.autocrlf setting (avoids whole-file CRLF/LF diffs).
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.ico binary
+*.pdf binary
