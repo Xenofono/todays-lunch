@@ -4,7 +4,13 @@ import { DailyMenu } from "../types";
 import { formatDish } from "../dish";
 import { normalizeWhitespace } from "../utils";
 
-// Big Ben's own site is down; their weekly menu is kept up to date on Kvartersmenyn
+// Big Ben's own site has no lunch menu; it's kept up to date on Kvartersmenyn. Their
+// kvartersmenyn.se domain is behind Cloudflare, which serves cloud hosts (our production)
+// a bot challenge, so read the same page from their Finnish mirror, which isn't.
+// It's HTTP-only (no TLS on that host); fine for reading a public menu server-side.
+// The card still links to the Swedish page.
+const MENU_SOURCE = "http://bigben.korttelimenu.com/";
+
 export class BigBen extends Restaurant {
     constructor() {
         super(
@@ -17,10 +23,8 @@ export class BigBen extends Restaurant {
     }
 
     protected async _getMenu(): Promise<DailyMenu> {
-        // Kvartersmenyn sits behind Cloudflare, which can answer requests from cloud
-        // hosts with a bot challenge instead of the page: look like a browser, and
-        // don't let the fetch cache hold on to a challenge page for hours
-        const res = await fetch(this._url, {
+        // look like a browser, and don't let the fetch cache hold on to an error page for hours
+        const res = await fetch(MENU_SOURCE, {
             cache: "no-store",
             headers: {
                 "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0 Safari/537.36",
