@@ -16,30 +16,13 @@ export class BigBen extends Restaurant {
         super(
             "Big Ben Pub",
             "https://www.kvartersmenyn.se/index.php/rest/8702",
-            "",
             "Folkungagatan 97, 116 30 Stockholm",
             { lat: 59.315561, lng: 18.08324 }
         );
     }
 
     protected async _getMenu(): Promise<DailyMenu> {
-        // look like a browser, and don't let the fetch cache hold on to an error page for hours
-        const res = await fetch(MENU_SOURCE, {
-            cache: "no-store",
-            headers: {
-                "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0 Safari/537.36",
-                "Accept": "text/html,application/xhtml+xml",
-                "Accept-Language": "sv-SE,sv;q=0.9,en;q=0.8",
-            },
-        });
-        const html = await res.text();
-        try {
-            return this._parseMenu(html);
-        } catch (error) {
-            // say what came back instead of the menu, e.g. "HTTP 403, 'Just a moment...'"
-            const title = cheerio.load(html)("title").text().trim().slice(0, 80);
-            throw new Error(`${error instanceof Error ? error.message : error} (HTTP ${res.status}, page title '${title}')`);
-        }
+        return this._parseMenu(await this.fetchText(MENU_SOURCE));
     }
 
     private _parseMenu(html: string): DailyMenu {

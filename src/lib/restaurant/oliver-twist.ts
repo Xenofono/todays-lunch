@@ -8,7 +8,6 @@ export class OliverTwist extends Restaurant {
         super(
             "Oliver Twist",
             "https://www.olivertwist.se/",
-            "https://www.olivertwist.se/placeholder",
             "Repslagargatan 6, 118 46 Stockholm",
             { lat: 59.3183, lng: 18.07000 }
         );
@@ -16,18 +15,7 @@ export class OliverTwist extends Restaurant {
 
     protected async _getMenu(): Promise<DailyMenu> {
         try {
-            // Fetch the webpage
-            const response = await fetch(this._url, {
-                next: {
-                    revalidate: 14400
-                }
-            });
-            if (!response.ok) {
-                throw new Error(`Failed to fetch website: ${response.status}`);
-            }
-
-            const html = await response.text();
-            const $ = cheerio.load(html);
+            const $ = cheerio.load(await this.fetchText());
 
             // Find lunch PDF link using the same selectors
             const selectors = [
@@ -55,14 +43,7 @@ export class OliverTwist extends Restaurant {
             // Update URL for future use
             this._url = pdfUrl;
 
-            // Download and parse PDF
-            const pdfResponse = await fetch(pdfUrl);
-            if (!pdfResponse.ok) {
-                throw new Error(`Failed to fetch PDF: ${pdfResponse.status}`);
-            }
-
-            const buffer = await pdfResponse.arrayBuffer();
-            const pdfData = await pdf(Buffer.from(buffer));
+            const pdfData = await pdf(await this.fetchBuffer(pdfUrl));
 
             return this._parseMenu(pdfData.text);
 

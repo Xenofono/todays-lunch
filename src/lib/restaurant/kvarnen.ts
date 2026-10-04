@@ -8,18 +8,13 @@ export class Kvarnen extends Restaurant {
         super(
             "Kvarnen",
             "https://www.kvarnen.com/sv/lunch",
-            "https://www.kvarnen.com/images/kvarnen/logo.svg",
             "Tjärhovsgatan 4, 116 21 Stockholm",
             { lat: 59.314846, lng: 18.0742 }
         );
     }
 
     protected async _getMenu(): Promise<DailyMenu> {
-        const html = await (await fetch(this._url, {
-            next: {
-                revalidate: 3600
-            }
-        })).text();
+        const html = await this.fetchText();
         return this._parseMenu(html);
     }
 

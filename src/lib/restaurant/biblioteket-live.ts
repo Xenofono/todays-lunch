@@ -8,7 +8,6 @@ export class BiblioteketLive extends Restaurant {
         super(
             "Biblioteket Live",
             "https://www.biblioteketlive.se/lunch",
-            "https://biblioteketlive.se/placeholder",
             "Medborgarplatsen 2, 118 26 Stockholm",
             { lat: 59.31470, lng: 18.071793 }
         );
@@ -17,17 +16,13 @@ export class BiblioteketLive extends Restaurant {
 
     protected async _getMenu(): Promise<DailyMenu> {
         const pdfUrl = await this._firstPdf();
-        const buf = await (await fetch(pdfUrl)).arrayBuffer();
-        const text = (await pdf(Buffer.from(buf))).text;
+        const buf = await this.fetchBuffer(pdfUrl);
+        const text = (await pdf(buf)).text;
         return this._parseMenu(text);
     }
 
     private async _firstPdf(): Promise<string> {
-        const html = await (await fetch(this._url, {
-            next: {
-                revalidate: 14400
-            }
-        })).text();
+        const html = await this.fetchText();
         const $ = cheerio.load(html);
         const href = $('a[href*=".pdf"]').first().attr("href");
         if (!href) throw new Error("No PDF link found");

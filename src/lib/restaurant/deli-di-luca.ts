@@ -7,7 +7,6 @@ export class DeliDiLuca extends Restaurant {
         super(
             "Deli Di Luca",
             "https://www.delidiluca.se/lunchmeny/",
-            "https://www.delidiluca.se/placeholder",
             "Folkungagatan 110, 116 30 Stockholm",
             { lat: 59.315414, lng: 18.084303 }
         );
@@ -15,11 +14,7 @@ export class DeliDiLuca extends Restaurant {
 
 
     protected async _getMenu(): Promise<DailyMenu> {
-        const html = await (await fetch(this._url, {
-            next: {
-                revalidate: 14400
-            }
-        })).text();
+        const html = await this.fetchText();
         return this._parseMenu(html);
     }
 

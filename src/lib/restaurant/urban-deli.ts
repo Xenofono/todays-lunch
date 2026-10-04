@@ -9,18 +9,13 @@ export class UrbanDeli extends Restaurant {
         super(
             "Urban Deli Nytorget",
             "https://urbandeli.se/nytorget/",
-            "",
             "Nytorget 4, 116 40 Stockholm",
             { lat: 59.312405, lng: 18.082756 }
         );
     }
 
     protected async _getMenu(): Promise<DailyMenu> {
-        const html = await (await fetch(this._url, {
-            next: {
-                revalidate: 14400
-            }
-        })).text();
+        const html = await this.fetchText();
         return this._parseMenu(html);
     }
 

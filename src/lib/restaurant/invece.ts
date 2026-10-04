@@ -10,7 +10,6 @@ export class Invece extends Restaurant {
         super(
             "Invece",
             "https://invece.se/lunch/",
-            "https://invece.se/wp-content/uploads/2023/01/invece-white.png",
             "Götgatan 73, 116 62 Stockholm",
             { lat: 59.311375, lng: 18.075058 }
         );
@@ -18,17 +17,13 @@ export class Invece extends Restaurant {
 
     protected async _getMenu(): Promise<DailyMenu> {
         const pdfUrl = await this._findPdfLink();
-        const buf = await (await fetch(pdfUrl)).arrayBuffer();
-        const text = (await pdf(Buffer.from(buf))).text;
+        const buf = await this.fetchBuffer(pdfUrl);
+        const text = (await pdf(buf)).text;
         return this._parseMenu(text);
     }
 
     private async _findPdfLink(): Promise<string> {
-        const html = await (await fetch(this._url, {
-            next: {
-                revalidate: 14400
-            }
-        })).text();
+        const html = await this.fetchText();
         const $ = cheerio.load(html);
         const href = $('a[href*=".pdf"]').first().attr("href");
         if (!href) throw new Error("No PDF link found");

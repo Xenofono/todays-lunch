@@ -9,18 +9,13 @@ export class Usine extends Restaurant {
         super(
             "Usine",
             "https://www.usine.se/bistro38",
-            "https://www.usine.se/bistro38/placeholder",
             "Södermalmsallén 38, 118 28 Stockholm",
             { lat: 59.313747, lng: 18.070368 }
         );
     }
 
     protected async _getMenu(): Promise<DailyMenu> {
-        const html = await (await fetch(this._url, {
-            next: {
-                revalidate: 14400
-            }
-        })).text();
+        const html = await this.fetchText();
         return this._parseMenu(html);
     }
 

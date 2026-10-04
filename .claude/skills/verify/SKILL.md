@@ -36,5 +36,7 @@ Then drive `http://localhost:3000` with `playwright-core`'s chromium. Flows wort
 
 ## Gotchas
 
+- Menus are cached per restaurant for 30 min (`src/lib/restaurant/menu-cache.ts`): only the first load after a server start scrapes (~2 s, `Updating restaurant menu: …` ×13 in the log). To check a scraper change, restart the server. Don't use a page load as the readiness probe or it warms the cache; probe `/favicon.ico`.
+
 - Menu content depends on live scrapes: some restaurants legitimately show "No menu at press time" (weekends, summer breaks), and totals like "5 DAYS · 0 DISHES" can be real data, not bugs.
 - Remote menu images must have their host allowed in `next.config.ts` `images.remotePatterns`.
